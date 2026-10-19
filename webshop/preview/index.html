@@ -1,0 +1,784 @@
+<title>Hyggehond Preview</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: één kolom mobiel, max 1200px desktop; huisstijl uit webshop/04-sitemap-wireframes.md */
+:root {
+  --bg: #FAF7F2; --surface: #FFFFFF; --fg: #2B2A28; --muted: #6B665D; --line: #E4DCCE;
+  --accent: #5E6B4E; --accent-soft: #E8EBE0; --sand: #D9CBB4; --btn: #2B2A28; --btn-fg: #FFFFFF;
+  --note: #F3EBDC; --ok: #4E6B45;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius: 4px; --wrap: 1200px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1B1A18; --surface: #24231F; --fg: #F0EBE2; --muted: #ABA498; --line: #3A3732;
+  --accent: #AEBC97; --accent-soft: #2D3228; --sand: #5B5345; --btn: #F0EBE2; --btn-fg: #1B1A18;
+  --note: #2E2A22; --ok: #A9C49C; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1B1A18; --surface: #24231F; --fg: #F0EBE2; --muted: #ABA498; --line: #3A3732;
+  --accent: #AEBC97; --accent-soft: #2D3228; --sand: #5B5345; --btn: #F0EBE2; --btn-fg: #1B1A18;
+  --note: #2E2A22; --ok: #A9C49C; color-scheme: dark }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+h3 { font-size: 1.15rem; }
+p { margin: 0; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.muted { color: var(--muted); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.skip { position: absolute; left: -999px; } .skip:focus { left: 16px; top: 8px; z-index: 50; background: var(--surface); padding: 8px 12px; }
+
+/* knoppen */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: 0 1.4rem; border-radius: var(--radius);
+  border: 1px solid var(--btn); background: var(--btn); color: var(--btn-fg); font: 500 1rem var(--body); cursor: pointer; text-decoration: none; }
+.btn.ghost { background: transparent; color: var(--fg); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.btn.full { width: 100%; }
+.linkbtn { background: none; border: 0; padding: 0; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* preview-band + usp */
+.preview { background: var(--note); font-size: .85rem; }
+.preview .wrap { padding-block: .5rem; display: flex; gap: .5rem 1rem; flex-wrap: wrap; justify-content: space-between; }
+.usp { background: var(--accent); color: var(--bg); font-size: .85rem; text-align: center; }
+.usp .wrap { padding-block: .45rem; }
+.usp .long { display: none; }
+@media (min-width: 700px) { .usp .long { display: inline; } .usp .short { display: none; } }
+
+/* header */
+header.site { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+header.site .wrap { display: flex; align-items: center; gap: 1rem; min-height: 64px; }
+.logo { display: flex; align-items: center; gap: .5rem; font-family: var(--display); font-size: 1.45rem; font-weight: 600; text-decoration: none; letter-spacing: .01em; }
+.logo svg { width: 26px; height: 26px; color: var(--accent); }
+nav.main { display: none; gap: 1.4rem; margin-left: 1.5rem; font-size: .95rem; }
+nav.main a { text-decoration: none; padding: .5rem 0; border-bottom: 2px solid transparent; }
+nav.main a[aria-current="page"], nav.main a:hover { border-color: var(--accent); }
+.hdr-actions { margin-left: auto; display: flex; align-items: center; gap: .25rem; }
+.iconbtn { width: 44px; height: 44px; display: inline-grid; place-items: center; border: 0; background: none; color: var(--fg); cursor: pointer; position: relative; border-radius: var(--radius); }
+.iconbtn svg { width: 22px; height: 22px; }
+.badge { position: absolute; top: 5px; right: 3px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--accent); color: var(--bg); font-size: .7rem; font-weight: 600; display: grid; place-items: center; padding: 0 4px; }
+.menu-toggle { display: inline-grid; }
+@media (min-width: 900px) { nav.main { display: flex; } .menu-toggle { display: none; } }
+.mobile-nav { border-top: 1px solid var(--line); }
+.mobile-nav .wrap { display: grid; padding-block: .5rem 1rem; }
+.mobile-nav a { padding: .7rem 0; text-decoration: none; border-bottom: 1px solid var(--line); font-size: 1.05rem; }
+
+main { min-height: 60vh; }
+section.block { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+section.block.tint { background: var(--surface); border-block: 1px solid var(--line); }
+.sec-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+/* hero */
+.hero .wrap { display: grid; gap: 2rem; padding-block: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (min-width: 860px) { .hero .wrap { grid-template-columns: 1fr 1.05fr; } }
+.hero p.lead { font-size: 1.15rem; color: var(--muted); max-width: 34ch; margin-top: 1rem; }
+.hero .ctas { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.6rem; }
+.hero-art { aspect-ratio: 5/4; max-width: 100%; border-radius: var(--radius); background: color-mix(in oklab, var(--sand) 55%, var(--bg)); position: relative; overflow: hidden; }
+.hero-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-art figcaption { position: absolute; left: 12px; bottom: 10px; font-size: .75rem; color: var(--muted); background: var(--bg); padding: 2px 8px; border-radius: var(--radius); }
+
+.promises { display: grid; gap: 1.5rem; }
+@media (min-width: 760px) { .promises { grid-template-columns: repeat(3, 1fr); } }
+.promise { display: grid; gap: .4rem; }
+.promise svg { width: 28px; height: 28px; color: var(--accent); }
+
+/* tegels categorie */
+.cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 860px) { .cats { grid-template-columns: repeat(4, 1fr); } }
+.cat { display: grid; gap: .6rem; text-decoration: none; }
+.cat .ph { aspect-ratio: 1; }
+.cat span { font-family: var(--display); font-size: 1.1rem; }
+
+/* productkaarten */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; }
+@media (min-width: 860px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.card { display: grid; gap: .5rem; text-decoration: none; align-content: start; }
+.card h3 { font-family: var(--body); font-weight: 500; font-size: .98rem; }
+.card .price { font-variant-numeric: tabular-nums; }
+.ph { border-radius: var(--radius); display: grid; place-items: center; position: relative; overflow: hidden; color: var(--accent); max-width: 100%; }
+.ph svg { width: 42%; height: 42%; }
+.ph .tag { position: absolute; left: 8px; top: 8px; font-size: .7rem; background: var(--bg); color: var(--muted); padding: 1px 7px; border-radius: var(--radius); }
+.card .ph { aspect-ratio: 1; transition: transform .25s ease; }
+.card:hover .ph { transform: scale(1.015); }
+@media (prefers-reduced-motion: reduce) { .card:hover .ph { transform: none; } * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* story */
+.story { display: grid; gap: 2rem; align-items: center; }
+@media (min-width: 860px) { .story { grid-template-columns: .9fr 1.1fr; } }
+.story .ph { aspect-ratio: 4/3; }
+.story p { max-width: 58ch; margin-top: .8rem; }
+
+.empty-reviews { border: 1px dashed var(--line); border-radius: var(--radius); padding: 1.5rem; display: grid; gap: .4rem; }
+
+.newsletter { display: grid; gap: 1rem; align-items: center; }
+@media (min-width: 860px) { .newsletter { grid-template-columns: 1.1fr 1fr; } }
+.nl-form { display: flex; gap: .5rem; flex-wrap: wrap; }
+.nl-form input { flex: 1 1 220px; }
+input, textarea, select { min-height: 44px; padding: .55rem .75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--fg); font: 1rem var(--body); width: 100%; }
+textarea { min-height: 110px; resize: vertical; }
+label { font-size: .9rem; font-weight: 500; display: grid; gap: .3rem; }
+.form { display: grid; gap: 1rem; max-width: 560px; }
+.ok-msg { background: var(--accent-soft); border-radius: var(--radius); padding: 1rem; }
+
+/* breadcrumb */
+.crumbs { font-size: .85rem; color: var(--muted); padding-block: 1rem; display: flex; gap: .4rem; flex-wrap: wrap; }
+.crumbs a { text-decoration: none; } .crumbs a:hover { text-decoration: underline; }
+
+/* collectie */
+.col-head { display: grid; gap: .6rem; padding-bottom: 1.5rem; }
+.col-head p { max-width: 62ch; color: var(--muted); }
+.toolbar { display: flex; gap: .75rem; justify-content: space-between; align-items: center; flex-wrap: wrap; padding-block: 1rem; border-block: 1px solid var(--line); margin-bottom: 1.5rem; font-size: .9rem; }
+.toolbar select { width: auto; min-height: 40px; }
+.chips { display: flex; gap: .5rem; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: .35rem .9rem; font: .88rem var(--body); color: var(--fg); cursor: pointer; min-height: 36px; }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* product */
+.pdp { display: grid; gap: 2rem; padding-bottom: 3rem; }
+@media (min-width: 900px) { .pdp { grid-template-columns: 1.1fr 1fr; gap: 3rem; } }
+.gallery { display: grid; gap: .6rem; align-content: start; min-width: 0; }
+.gallery .ph.main { aspect-ratio: 1; }
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+.thumbs .ph { aspect-ratio: 1; }
+.thumbs .ph svg { width: 36%; height: 36%; }
+.buy { display: grid; gap: 1.1rem; align-content: start; min-width: 0; }
+.pprice { font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.pprice small { font-size: .85rem; color: var(--muted); margin-left: .4rem; }
+.ship-note { font-size: .88rem; color: var(--muted); }
+.sizes { display: flex; gap: .5rem; flex-wrap: wrap; }
+.size { min-height: 44px; padding: .4rem .9rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--fg); font: .92rem var(--body); cursor: pointer; }
+.size[aria-pressed="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.stock { display: flex; gap: .5rem; align-items: baseline; font-size: .95rem; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); flex: none; transform: translateY(-1px); }
+.paylogos { display: flex; flex-wrap: wrap; gap: .4rem; }
+.paylogos span { font-size: .72rem; border: 1px solid var(--line); border-radius: 3px; padding: 2px 7px; color: var(--muted); background: var(--surface); }
+details.acc { border-top: 1px solid var(--line); }
+details.acc:last-of-type { border-bottom: 1px solid var(--line); }
+details.acc summary { cursor: pointer; padding: 1rem 0; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+details.acc summary::after { content: "+"; font-family: var(--display); font-size: 1.3rem; line-height: 1; }
+details.acc[open] summary::after { content: "−"; }
+details.acc .in { padding-bottom: 1.1rem; display: grid; gap: .6rem; font-size: .95rem; }
+details.acc ul { margin: 0; padding-left: 1.2rem; }
+dl.gpsr { margin: 0; display: grid; gap: .5rem; }
+dl.gpsr dt { font-weight: 600; font-size: .85rem; }
+dl.gpsr dd { margin: 0; }
+.ph-note { font-size: .8rem; color: var(--muted); }
+
+.sticky-atc { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--bg); border-top: 1px solid var(--line);
+  padding: .7rem max(16px, env(safe-area-inset-right, 0px)) calc(.7rem + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: flex; gap: 1rem; align-items: center; }
+.sticky-atc .btn { flex: 1; }
+@media (min-width: 900px) { .sticky-atc { display: none !important; } }
+
+/* drawer */
+.scrim { position: fixed; inset: 0; background: rgb(0 0 0 / .35); z-index: 20; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--bg); z-index: 21; display: grid; grid-template-rows: auto auto 1fr auto;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px); box-shadow: -8px 0 24px rgb(0 0 0 / .12); }
+.drawer > * { padding-inline: 1.25rem; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; padding-block: .75rem; border-bottom: 1px solid var(--line); }
+.drawer-body { overflow-y: auto; padding-block: 1rem; display: grid; gap: 1rem; align-content: start; }
+.drawer-foot { border-top: 1px solid var(--line); padding-block: 1rem; display: grid; gap: .6rem; }
+.fsb { padding-block: .9rem; border-bottom: 1px solid var(--line); font-size: .9rem; display: grid; gap: .4rem; }
+.fsb .bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.fsb .bar i { display: block; height: 100%; background: var(--accent); }
+.line { display: grid; grid-template-columns: 64px 1fr auto; gap: .8rem; align-items: start; }
+.line .ph { width: 64px; height: 64px; }
+.line .ph svg { width: 50%; height: 50%; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: var(--radius); margin-top: .4rem; }
+.qty button { width: 36px; height: 36px; border: 0; background: none; color: var(--fg); font-size: 1.05rem; cursor: pointer; }
+.qty span { min-width: 24px; text-align: center; font-variant-numeric: tabular-nums; }
+.split { background: var(--note); border-radius: var(--radius); padding: .7rem .85rem; font-size: .88rem; }
+.sum { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+.sum.total { font-weight: 600; font-size: 1.05rem; }
+
+/* paginatekst */
+.prose { max-width: 68ch; display: grid; gap: 1rem; padding-bottom: 3.5rem; }
+.prose h2 { margin-top: 1rem; }
+.prose ul, .prose ol { margin: 0; padding-left: 1.3rem; display: grid; gap: .3rem; }
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { text-align: left; padding: .55rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; }
+.concept { background: var(--note); border-radius: var(--radius); padding: .7rem .9rem; font-size: .88rem; }
+.faq-group { display: grid; gap: 0; }
+
+/* blog */
+.posts { display: grid; gap: 1.5rem; }
+@media (min-width: 760px) { .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.post { display: grid; gap: .6rem; text-decoration: none; }
+.post .ph { aspect-ratio: 16/9; }
+
+/* checkout */
+.co { display: grid; gap: 2rem; padding-bottom: 3rem; }
+@media (min-width: 900px) { .co { grid-template-columns: 1.2fr 1fr; } }
+.co fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: .8rem; }
+.co legend { font-family: var(--display); font-size: 1.25rem; margin-bottom: .6rem; }
+.two { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.paym { display: grid; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.paym label { flex-direction: row; display: flex; align-items: center; gap: .7rem; padding: .8rem 1rem; border-bottom: 1px solid var(--line); font-weight: 400; cursor: pointer; }
+.paym label:last-child { border-bottom: 0; }
+.paym input { width: auto; min-height: 0; }
+.summary { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem; display: grid; gap: .8rem; align-content: start; }
+.check { display: flex; gap: .6rem; align-items: start; font-weight: 400; flex-direction: row; }
+.check input { width: auto; min-height: 0; margin-top: .3rem; }
+
+/* footer */
+footer.site { background: var(--surface); border-top: 1px solid var(--line); margin-top: 2rem; font-size: .92rem; }
+footer.site .wrap { padding-block: 2.5rem calc(2.5rem + env(safe-area-inset-bottom, 0px)); display: grid; gap: 2rem; }
+.fcols { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.fcols h3 { font-family: var(--body); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: .6rem; }
+.fcols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.fcols a { text-decoration: none; } .fcols a:hover { text-decoration: underline; }
+.legal { border-top: 1px solid var(--line); padding-top: 1.2rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; color: var(--muted); font-size: .82rem; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(84px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: .6rem 1rem; border-radius: var(--radius); z-index: 30; font-size: .9rem; }
+</style>
+
+<a class="skip" href="#main">Naar de inhoud</a>
+<div class="preview" role="note"><div class="wrap"><span><strong>Preview</strong> van Hyggehond. Nog geen echte winkel: je kunt niets bestellen of betalen.</span><span class="muted">Productfoto's volgen; vlakken zijn plaatshouders.</span></div></div>
+<div class="usp"><div class="wrap"><span class="long">Levering in 2–5 werkdagen · 30 dagen bedenktijd · Gratis verzending vanaf € 50</span><span class="short">Gratis verzending vanaf € 50 · 30 dagen bedenktijd</span></div></div>
+
+<header class="site">
+  <div class="wrap">
+    <button class="iconbtn menu-toggle" id="menuBtn" aria-expanded="false" aria-controls="mnav" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="logo" href="#home" aria-label="Hyggehond home">
+      <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><ellipse cx="16" cy="21" rx="7" ry="6"/><ellipse cx="8" cy="13" rx="2.6" ry="3.4"/><ellipse cx="13" cy="8.5" rx="2.6" ry="3.4"/><ellipse cx="19" cy="8.5" rx="2.6" ry="3.4"/><ellipse cx="24" cy="13" rx="2.6" ry="3.4"/></svg>
+      Hyggehond
+    </a>
+    <nav class="main" aria-label="Hoofdmenu" id="mainNav"></nav>
+    <div class="hdr-actions">
+      <button class="iconbtn" id="cartBtn" aria-label="Winkelwagen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="badge" id="cartCount" hidden>0</span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mnav" hidden><div class="wrap" id="mobileNavInner"></div></div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fcols">
+      <div><h3>Shop</h3><ul>
+        <li><a href="#c-rust-slapen">Rust &amp; slapen</a></li><li><a href="#c-op-pad">Op pad</a></li>
+        <li><a href="#c-eten-spelen">Eten &amp; spelen</a></li><li><a href="#c-cadeaus">Cadeaus</a></li><li><a href="#c-all">Alle producten</a></li></ul></div>
+      <div><h3>Klantenservice</h3><ul>
+        <li><a href="#faq">Veelgestelde vragen</a></li><li><a href="#verzending">Verzending</a></li><li><a href="#retour">Retourneren</a></li>
+        <li><a href="#herroepen">Overeenkomst herroepen</a></li><li><a href="#track-trace">Bestelling volgen</a></li><li><a href="#maatgids">Maatgids</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h3>Hyggehond</h3><ul>
+        <li><a href="#over-ons">Over ons</a></li><li><a href="#journal">Journal</a></li></ul></div>
+      <div><h3>Juridisch</h3><ul>
+        <li><a href="#voorwaarden">Algemene voorwaarden</a></li><li><a href="#privacy">Privacyverklaring</a></li><li><a href="#cookies">Cookieverklaring</a></li>
+        <li><a href="#herroepingsrecht">Herroepingsrecht</a></li><li><a href="#bedrijfsgegevens">Bedrijfsgegevens</a></li></ul></div>
+    </div>
+    <div class="paylogos" aria-label="Betaalmethoden"><span>iDEAL | Wero</span><span>Bancontact</span><span>Visa</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span><span>Klarna</span></div>
+    <div class="legal"><span>Hyggehond is een handelsnaam van Dylan Smit Holding B.V. · KvK [KVK] · Btw [BTW] · [ADRES]</span><span>Prijzen incl. 21% btw</span></div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+  <div class="drawer-head"><h2 id="drawerTitle" style="font-size:1.3rem">Je winkelwagen</h2>
+    <button class="iconbtn" id="drawerClose" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="fsb" id="fsb"></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</aside>
+<div class="sticky-atc" id="stickyAtc" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const DATA = {"products": [{"h": "orthopedische-hondenmand-rust", "t": "Orthopedische hondenmand Rust", "c": "Rust & slapen", "l": "L1", "v": [{"n": "S – 70 x 50 cm", "p": 74.95}, {"n": "M – 90 x 65 cm", "p": 94.95}, {"n": "L – 110 x 80 cm", "p": 119.95}], "i": "Een mand waarin je hond echt tot rust komt. De kern van traagschuim vormt zich naar het lichaam en verdeelt het gewicht gelijkmatig. Fijn voor oudere honden, grote rassen en iedere hond die graag languit ligt.", "b": ["Traagschuim kern die niet uitzakt", "Afneembare bouclé hoes, wasbaar op 30 °C", "Antislip onderkant: blijft liggen op laminaat en tegels", "Lage instap, makkelijk voor stijve gewrichten"], "s": ["Kern: traagschuim (memory foam), ca. 8 cm", "Hoes: polyester bouclé, rits", "Onderkant: antislip, waterafstotend", "Kleur: warm zand"], "f": [["Welke maat heeft mijn hond nodig?", "Meet je hond van neus tot staartaanzet als hij ligt en tel daar 15–20 cm bij op. Twijfel je tussen twee maten, kies dan de grotere."], ["Kan de kern in de wasmachine?", "Nee, alleen de hoes. De kern kun je luchten en met een vochtige doek schoonmaken."], ["Is dit een medisch product?", "Nee. De mand is ontworpen voor comfort en ondersteuning, maar vervangt geen advies van je dierenarts."]], "w": "Geen speelgoed: controleer de mand regelmatig op beschadigingen en verwijder losse vulling of draadjes direct. Houd de plastic verpakking buiten bereik van kinderen en dieren (verstikkingsgevaar). Volg het wasvoorschrift op het label."}, {"h": "donutmand-nest", "t": "Donutmand Nest", "c": "Rust & slapen", "l": "L1", "v": [{"n": "S – Ø 50 cm", "p": 47.95}, {"n": "M – Ø 70 cm", "p": 59.95}, {"n": "L – Ø 90 cm", "p": 79.95}], "i": "Voor honden die zich graag oprollen. De verhoogde rand geeft steun aan kop en nek en zorgt voor een geborgen gevoel. Ideaal voor de bank-liefhebbers en onrustige slapers.", "b": ["Hoge, zachte rand als hoofdsteun", "Superzacht teddy-materiaal", "Volledig wasbaar op 30 °C", "Antislip bodem"], "s": ["Materiaal: polyester teddy-pluche", "Vulling: holle vezel", "Kleur: crème of steengrijs"], "f": [["Gaat de vulling klonteren na het wassen?", "Was op 30 °C met een lage centrifuge en schud de mand goed op tijdens het drogen. Niet in de droger."], ["Welke maat?", "Meet je hond opgerold van neus tot staartaanzet en kies een diameter die 10–15 cm groter is."]], "w": "Geen speelgoed: controleer de mand regelmatig op beschadigingen en verwijder losse vulling of draadjes direct. Houd de plastic verpakking buiten bereik van kinderen en dieren (verstikkingsgevaar). Volg het wasvoorschrift op het label."}, {"h": "hondenplaid-teddy-waterafstotend", "t": "Hondenplaid Teddy – waterafstotend", "c": "Rust & slapen", "l": "L1", "v": [{"n": "100 x 75 cm", "p": 29.95}, {"n": "150 x 100 cm", "p": 39.95}], "i": "Bescherm je bank, bed of achterbank zonder in te leveren op stijl. Deze plaid is zacht aan de bovenkant en waterafstotend aan de onderkant, dus natte poten en haren blijven waar ze horen.", "b": ["Waterafstotende tussenlaag", "Zacht teddy-materiaal", "Wasbaar op 30 °C", "Ook fijn in de bench of auto"], "s": ["Bovenkant: teddy-fleece", "Onderkant: waterafstotende microvezel", "Kleur: zand of mosgroen"], "f": [["Is de plaid volledig waterdicht?", "Hij is waterafstotend: morsen en natte poten stoppen. Bij langdurig liggen in een plas kan vocht doordringen."]], "w": "Geen speelgoed: controleer de mand regelmatig op beschadigingen en verwijder losse vulling of draadjes direct. Houd de plastic verpakking buiten bereik van kinderen en dieren (verstikkingsgevaar). Volg het wasvoorschrift op het label."}, {"h": "benchkussen-antislip", "t": "Benchkussen met antislip", "c": "Rust & slapen", "l": "L1", "v": [{"n": "S – 60 x 45 cm", "p": 39.95}, {"n": "M – 75 x 55 cm", "p": 49.95}, {"n": "L – 90 x 60 cm", "p": 59.95}], "i": "Een stevig kussen dat precies in de meest gangbare benchmaten past. Maakt van de bench een veilige, comfortabele plek waar je hond graag naartoe gaat.", "b": ["Past in standaard benchmaten", "Antislip bodem, schuift niet", "Hoes wasbaar op 30 °C", "Licht en makkelijk mee te nemen"], "s": ["Dikte: ca. 5 cm", "Hoes: ribstof polyester", "Kleur: steengrijs"], "f": [["Past dit in mijn bench?", "Meet de binnenmaat van je bench. Het kussen mag 1–2 cm kleiner zijn; dan ligt het vlak."]], "w": "Geen speelgoed: controleer de mand regelmatig op beschadigingen en verwijder losse vulling of draadjes direct. Houd de plastic verpakking buiten bereik van kinderen en dieren (verstikkingsgevaar). Volg het wasvoorschrift op het label."}, {"h": "autostoel-kleine-hond", "t": "Autostoel voor kleine honden", "c": "Op pad", "l": "L2", "v": [{"n": "Universeel – tot 8 kg", "p": 59.95}], "i": "Kleine honden zien graag wat er buiten gebeurt. In deze verhoogde autostoel zit je hond stabiel en comfortabel, met een kort aanlijnkoord dat je aan het tuig vastmaakt.", "b": ["Verhoogde zit: uitzicht en minder wagenziek", "Bevestiging met hoofdsteunband en gordel", "Kort koord voor aan het tuig", "Wasbaar kussen"], "s": ["Geschikt voor honden tot 8 kg", "Afmeting ca. 45 x 40 x 25 cm", "Materiaal: oxford-polyester met stevige wanden"], "f": [["Is deze stoel crashgetest?", "Nee. Hij geeft comfort en stabiliteit maar vervangt geen crashgeteste bench. Maak het koord altijd vast aan een tuig, nooit aan een halsband."]], "w": "Vervangt geen crashgeteste bench of goedgekeurd veiligheidssysteem. Gebruik altijd in combinatie met een veiligheidsgordel-adapter of tuig. Laat je hond nooit alleen achter in de auto."}, {"h": "autostoelhoes-achterbank", "t": "Waterdichte autostoelhoes achterbank", "c": "Op pad", "l": "L2", "v": [{"n": "Universeel", "p": 54.95}], "i": "Na een modderige boswandeling gewoon instappen. Deze hoes beschermt de hele achterbank tegen modder, haren en krassen en is in twee minuten geplaatst.", "b": ["Waterdicht en krasbestendig", "Zijflappen beschermen de portieren", "Gordelopeningen met klittenband", "Afneembaar en wasbaar"], "s": ["Afmeting ca. 147 x 137 cm", "4-laags oxford met waterdichte coating", "Kleur: antraciet"], "f": [["Past de hoes in mijn auto?", "De hoes past op de meeste achterbanken van hatchbacks, sedans en SUV's. Controleer de breedte van je achterbank (ca. 135–150 cm)."]], "w": "Vervangt geen crashgeteste bench of goedgekeurd veiligheidssysteem. Gebruik altijd in combinatie met een veiligheidsgordel-adapter of tuig. Laat je hond nooit alleen achter in de auto."}, {"h": "y-tuig-zacht-gevoerd", "t": "Y-tuig zacht gevoerd", "c": "Op pad", "l": "L2", "v": [{"n": "XS", "p": 34.95}, {"n": "S", "p": 34.95}, {"n": "M", "p": 36.95}, {"n": "L", "p": 39.95}], "i": "Een Y-tuig laat de schouders vrij bewegen en drukt niet op de keel. Zacht gevoerd, met vier verstelpunten en een stevige handgreep voor als je je hond even dicht bij je wilt houden.", "b": ["Y-vorm: vrije schouderbeweging, geen druk op de keel", "4 verstelpunten voor de perfecte pasvorm", "Reflecterende stiksels", "Handgreep op de rug"], "s": ["Materiaal: nylon webbing met air-mesh voering", "Aluminium D-ring", "Kleuren: zand, mosgroen, antraciet"], "f": [["Hoe meet ik mijn hond?", "Meet de borstomvang achter de voorpoten en de nekomvang. Zie de maattabel; zit je tussen twee maten, kies de grotere en stel strakker af."], ["Kan mijn hond eruit glippen?", "Bij de juiste afstelling (twee vingers ruimte) is dat onwaarschijnlijk. Controleer de pasvorm voor elke wandeling."]], "w": "Controleer voor elk gebruik op slijtage, scheurtjes en de werking van sluitingen. Laat je hond nooit onbeheerd achter met tuig, halsband of lijn om. Niet gebruiken voor klimmen, trekken van lasten of als veiligheidsgordel. Juiste pasvorm: twee vingers ruimte."}, {"h": "verstelbare-riem-biothane", "t": "Verstelbare riem biothane – 2 m", "c": "Op pad", "l": "L2", "v": [{"n": "Standaard", "p": 27.95}], "i": "Biothane voelt aan als leer maar is waterdicht, vuilafstotend en vrijwel onverwoestbaar. Met drie lengtes in één riem: kort in de stad, lang in het bos.", "b": ["Waterdicht: na de wandeling afspoelen en klaar", "3 lengtes: 1,2 / 1,6 / 2 m", "Geen nare geur, ook niet na regen", "Stevige karabijnhaak"], "s": ["Materiaal: biothane (gecoat polyester)", "Breedte 16 mm", "Kleuren: zand, mosgroen, zwart"], "f": [["Voor welke honden is deze riem geschikt?", "Voor honden van 5 tot 40 kg. Voor zeer sterke trekkers raden we training en een tuig aan."]], "w": "Controleer voor elk gebruik op slijtage, scheurtjes en de werking van sluitingen. Laat je hond nooit onbeheerd achter met tuig, halsband of lijn om. Niet gebruiken voor klimmen, trekken van lasten of als veiligheidsgordel. Juiste pasvorm: twee vingers ruimte."}, {"h": "halsband-biothane", "t": "Halsband biothane", "c": "Op pad", "l": "L2", "v": [{"n": "S – 25–35 cm", "p": 22.95}, {"n": "M – 33–45 cm", "p": 22.95}, {"n": "L – 42–55 cm", "p": 24.95}], "i": "Een halsband die tegen een stootje kan. Biothane droogt direct, blijft soepel en ruikt niet. Matcht met onze biothane riem.", "b": ["Waterdicht en makkelijk schoon", "Roestvrije gesp", "Matcht met de biothane riem", "Licht en soepel"], "s": ["Materiaal: biothane", "Breedte 19 mm", "Kleuren: zand, mosgroen, zwart"], "f": [["Halsband of tuig?", "Voor honden die trekken adviseren we een tuig. Een halsband is fijn voor het penning en rustige wandelingen."]], "w": "Controleer voor elk gebruik op slijtage, scheurtjes en de werking van sluitingen. Laat je hond nooit onbeheerd achter met tuig, halsband of lijn om. Niet gebruiken voor klimmen, trekken van lasten of als veiligheidsgordel. Juiste pasvorm: twee vingers ruimte."}, {"h": "regenjas-hond-reflecterend", "t": "Regenjas reflecterend", "c": "Op pad", "l": "L2", "v": [{"n": "S – rug 30 cm", "p": 39.95}, {"n": "M – rug 40 cm", "p": 42.95}, {"n": "L – rug 50 cm", "p": 44.95}, {"n": "XL – rug 60 cm", "p": 47.95}], "i": "Droog thuiskomen na een regenwandeling. Deze lichte regenjas houdt rug en flanken droog en is goed zichtbaar in het donker dankzij reflecterende details.", "b": ["Waterdicht en winddicht", "Reflecterende biezen", "Opening voor tuig of riem", "Opvouwbaar in eigen zakje"], "s": ["Buitenstof: polyester met waterdichte coating", "Voering: licht mesh", "Kleur: mosgroen"], "f": [["Welke maat?", "Meet de rug van nekaanzet tot staartaanzet. Kies de maat die daar het dichtst bij ligt."]], "w": "Laat je hond niet onbeheerd met de jas aan. Controleer of de jas de bewegingsvrijheid niet beperkt."}, {"h": "wandelset-drinkfles-bak", "t": "Wandelset drinkfles + opvouwbare bak", "c": "Op pad", "l": "L2", "v": [{"n": "Standaard", "p": 27.95}], "i": "Altijd vers water bij de hand. De drinkfles met klepbakje is met één hand te gebruiken; de opvouwbare siliconen bak gebruik je voor voer of extra water.", "b": ["Drinkfles 500 ml, lekvrij", "Opvouwbare bak klikt aan je riem", "BPA-vrij", "Vaatwasserbestendig (bak)"], "s": ["Fles: BPA-vrij kunststof, 500 ml", "Bak: siliconen, 350 ml", "Karabijnhaak inbegrepen"], "f": [["Is het geschikt voor de vaatwasser?", "De siliconen bak wel; de fles spoel je met de hand om de afdichting te sparen."]], "w": "Reinig na elk gebruik. Keramiek is breekbaar: niet meer gebruiken bij barsten of scherpe randen. Niet geschikt voor de magnetron tenzij anders vermeld."}, {"h": "poepzakhouder-composteerbaar", "t": "Poepzakhouder + 120 composteerbare zakjes", "c": "Op pad", "l": "L2", "v": [{"n": "Standaard", "p": 19.95}], "i": "Een nette houder die je aan elke riem klikt, met 8 rollen composteerbare zakjes. Stevig, scheurt niet en ruikt neutraal.", "b": ["Houder van gerecycled materiaal", "120 composteerbare zakjes (8 rollen)", "Clip voor elke riem", "Zakjes makkelijk af te scheuren"], "s": ["Houder: kunststof met clip", "Zakjes: composteerbaar volgens EN 13432 (certificaat leverancier controleren)"], "f": [["Mogen de zakjes in de groenbak?", "Dat verschilt per gemeente; de meeste staan hondenpoep in de gft-bak niet toe. Gooi ze bij twijfel bij het restafval."]], "w": "Niet geschikt als speelgoed. Zakjes buiten bereik van kinderen bewaren (verstikkingsgevaar)."}, {"h": "snoepjestas-wandelen", "t": "Snoepjestas voor training", "c": "Op pad", "l": "L2", "v": [{"n": "Standaard", "p": 22.95}], "i": "Belonen op het juiste moment is de sleutel van goede training. Deze tas gaat met één hand open en weer dicht, en heeft een vak voor sleutels en zakjes.", "b": ["Magnetische sluiting, met één hand te bedienen", "Afneembare, wasbare binnenvoering", "Riemclip en heupband", "Extra vak voor telefoon en sleutels"], "s": ["Materiaal: waterafstotend polyester", "Kleur: zand of zwart"], "f": [["Kan de tas in de wasmachine?", "De binnenvoering wel op 30 °C; de buitenkant reinig je met een vochtige doek."]], "w": "Reinig regelmatig. Niet geschikt als speelgoed."}, {"h": "sleeplijn-biothane-10m", "t": "Sleeplijn biothane – 10 m", "c": "Op pad", "l": "L2", "v": [{"n": "10 meter", "p": 39.95}], "i": "Vrijheid met controle: een lange lijn voor trainen van de terugroep of wandelen waar loslopen niet mag. Biothane blijft niet aan takken haken en wordt niet zwaar van modder.", "b": ["Waterdicht en vuilafstotend", "Glijdt over gras zonder haken", "Geen brandplekken zoals bij nylon", "Stevige karabijnhaak"], "s": ["Lengte 10 m, breedte 13 mm", "Materiaal: biothane", "Kleur: neonoranje (goed zichtbaar)"], "f": [["Aan tuig of halsband?", "Gebruik een sleeplijn altijd aan een tuig, nooit aan een halsband."]], "w": "Controleer voor elk gebruik op slijtage, scheurtjes en de werking van sluitingen. Laat je hond nooit onbeheerd achter met tuig, halsband of lijn om. Niet gebruiken voor klimmen, trekken van lasten of als veiligheidsgordel. Juiste pasvorm: twee vingers ruimte."}, {"h": "slowfeeder-voerbak", "t": "Slowfeeder voerbak", "c": "Eten & drinken", "l": "L3", "v": [{"n": "Standaard – 500 ml", "p": 24.95}], "i": "Voor honden die hun bak in tien seconden leeg hebben. Het doolhofpatroon vertraagt het eten en maakt van elke maaltijd een kleine zoektocht.", "b": ["Vertraagt het eten tot 5x", "Antislip rubber rand", "Vaatwasserbestendig", "Ook geschikt voor natvoer"], "s": ["Materiaal: BPA-vrij voedselveilig kunststof", "Inhoud ca. 500 ml", "Kleur: zand of salie"], "f": [["Helpt dit tegen een opgeblazen maag?", "Langzamer eten wordt vaak aangeraden, maar dit is geen medisch product. Overleg bij klachten met je dierenarts."]], "w": "Reinig na elk gebruik. Keramiek is breekbaar: niet meer gebruiken bij barsten of scherpe randen. Niet geschikt voor de magnetron tenzij anders vermeld."}, {"h": "keramische-voerbak-bamboe", "t": "Keramische voerbakken op bamboe standaard", "c": "Eten & drinken", "l": "L3", "v": [{"n": "Set van 2 – verhoogd", "p": 49.95}], "i": "Een mooi stuk in je keuken. Twee keramische bakken op een verhoogde bamboe standaard: hygiënisch, zwaar genoeg om niet te schuiven en fijn voor de nek van middelgrote honden.", "b": ["Keramiek: geurloos en makkelijk schoon", "Verhoogd: prettiger eten voor middelgrote honden", "Bamboe standaard met antislip voetjes", "Bakken vaatwasserbestendig"], "s": ["2 bakken van ca. 600 ml", "Hoogte standaard ca. 10 cm", "Materiaal: keramiek, bamboe"], "f": [["Is keramiek voedselveilig?", "Ja, wij vragen de conformiteitsverklaring voor voedselcontact (EU 1935/2004) op bij de leverancier."]], "w": "Reinig na elk gebruik. Keramiek is breekbaar: niet meer gebruiken bij barsten of scherpe randen. Niet geschikt voor de magnetron tenzij anders vermeld."}, {"h": "likmat-set", "t": "Likmat set van 2", "c": "Eten & drinken", "l": "L3", "v": [{"n": "Set van 2", "p": 17.95}], "i": "Likken werkt kalmerend. Smeer er wat yoghurt, kwark of natvoer op en je hond is een kwartier zoet. Fijn bij onweer, vuurwerk of als je even rust nodig hebt.", "b": ["Kalmerende bezigheid", "Zuignappen voor op tegels of in bad", "Vaatwasserbestendig", "Ook in de vriezer voor langer plezier"], "s": ["Materiaal: voedselveilig siliconen", "Afmeting ca. 20 x 20 cm"], "f": [["Mag mijn hond erop kauwen?", "Nee, een likmat is geen kauwspeelgoed. Haal de mat weg als je hond gaat bijten."]], "w": "Alleen onder toezicht gebruiken. Kies een formaat dat je hond niet in zijn geheel kan doorslikken. Verwijder beschadigd speelgoed direct. Dit is geen kinderspeelgoed."}, {"h": "snuffelmat", "t": "Snuffelmat", "c": "Spelen & verrijking", "l": "L3", "v": [{"n": "Standaard – 45 x 45 cm", "p": 32.95}], "i": "Tien minuten snuffelen is net zo vermoeiend als een halfuur wandelen. Verstop brokjes in de fleece stroken en laat je hond het werk doen: ideaal voor regenachtige dagen.", "b": ["Hersenwerk: vermoeit op een goede manier", "Vertraagt het eten", "Wasbaar op 30 °C", "Antislip onderkant"], "s": ["Materiaal: fleece op rubberen basis", "Afmeting ca. 45 x 45 cm"], "f": [["Mijn hond trekt de stroken eruit, wat nu?", "Gebruik de mat altijd onder toezicht en ruim hem op na gebruik."]], "w": "Alleen onder toezicht gebruiken. Kies een formaat dat je hond niet in zijn geheel kan doorslikken. Verwijder beschadigd speelgoed direct. Dit is geen kinderspeelgoed."}, {"h": "puzzelspeelgoed-niveau-2", "t": "Puzzelspeelgoed niveau 2", "c": "Spelen & verrijking", "l": "L3", "v": [{"n": "Standaard", "p": 29.95}], "i": "Schuiven, draaien en optillen: deze puzzel daagt je hond uit om zijn snoepjes te verdienen. Niveau 2 is geschikt voor honden die een simpele snuffelmat al snel doorhebben.", "b": ["Drie soorten puzzelstukjes", "Antislip rubberen voetjes", "Makkelijk schoon te maken", "Bouwt zelfvertrouwen op"], "s": ["Materiaal: BPA-vrij kunststof", "Afmeting ca. 30 x 30 cm"], "f": [["Mijn hond snapt het niet, wat nu?", "Begin met de vakjes open en help de eerste keren. Na een paar sessies hebben de meeste honden het door."]], "w": "Alleen onder toezicht gebruiken. Kies een formaat dat je hond niet in zijn geheel kan doorslikken. Verwijder beschadigd speelgoed direct. Dit is geen kinderspeelgoed."}, {"h": "touwspeelgoed-set-katoen", "t": "Touwspeelgoed set katoen (3-delig)", "c": "Spelen & verrijking", "l": "L3", "v": [{"n": "Set van 3", "p": 19.95}], "i": "Drie touwen van onbehandeld katoen voor trekspelletjes, apporteren en kauwen. In rustige kleuren die mooi blijven in je woonkamer.", "b": ["Onbehandeld katoen", "Drie vormen: knoop, ring en trektouw", "Helpt bij het schoonhouden van tanden", "Wasbaar op 30 °C"], "s": ["Materiaal: 100% katoen", "Lengte ca. 25–40 cm"], "f": [["Is dit geschikt voor harde kauwers?", "Voor fanatieke kauwers raden we de natuurrubber kauwbal aan; touw kan dan rafelen."]], "w": "Alleen onder toezicht gebruiken. Kies een formaat dat je hond niet in zijn geheel kan doorslikken. Verwijder beschadigd speelgoed direct. Dit is geen kinderspeelgoed."}, {"h": "kauwbal-natuurrubber", "t": "Kauwbal natuurrubber", "c": "Spelen & verrijking", "l": "L3", "v": [{"n": "M – Ø 6 cm", "p": 19.95}, {"n": "L – Ø 8 cm", "p": 22.95}], "i": "Stevig, stuiterend en vulbaar met snoepjes of pindakaas. Natuurrubber is zacht voor het gebit en houdt het lang vol.", "b": ["Natuurrubber, stevig en flexibel", "Vulbaar met snacks", "Onvoorspelbaar stuiteren", "Vaatwasserbestendig"], "s": ["Materiaal: natuurrubber", "Kleur: zand"], "f": [["Welke maat?", "Kies altijd een bal die niet in de bek van je hond past. Twijfel je, neem dan L."]], "w": "Alleen onder toezicht gebruiken. Kies een formaat dat je hond niet in zijn geheel kan doorslikken. Verwijder beschadigd speelgoed direct. Dit is geen kinderspeelgoed."}, {"h": "deshedding-borstel", "t": "Deshedding borstel", "c": "Verzorging", "l": "L2", "v": [{"n": "Standaard", "p": 24.95}], "i": "Minder haren op de bank. Deze borstel verwijdert losse ondervacht zonder de bovenvacht te beschadigen, met een knop om het haar in één keer los te laten.", "b": ["Verwijdert losse ondervacht", "Zelfreinigende knop", "Ergonomische greep", "Voor middellange en lange vachten"], "s": ["Kam: roestvrij staal", "Greep: antislip"], "f": [["Hoe vaak borstelen?", "In de verharingsperiode 2–3 keer per week, kort en zonder hard te drukken."]], "w": "Niet gebruiken op wonden, ontstoken of geïrriteerde huid. Buiten bereik van kinderen bewaren."}, {"h": "pootreiniger", "t": "Pootreiniger", "c": "Verzorging", "l": "L2", "v": [{"n": "M", "p": 22.95}, {"n": "L", "p": 24.95}], "i": "Modderpoten? Vul de beker met wat lauw water, draai een paar keer en dep na met een handdoek. Je vloer blijft schoon.", "b": ["Zachte siliconen borstels", "Makkelijk mee te nemen in de auto", "Vaatwasserbestendig (borstelinzet)", "In twee maten"], "s": ["Materiaal: kunststof beker met siliconen inzet", "M: kleine en middelgrote honden · L: grote honden"], "f": [["Welke maat?", "Past de poot met wat ruimte in een gewone mok, dan is M goed. Anders L."]], "w": "Niet gebruiken op wonden, ontstoken of geïrriteerde huid. Buiten bereik van kinderen bewaren."}, {"h": "hondenbadjas-microvezel", "t": "Hondenbadjas microvezel", "c": "Verzorging", "l": "L2", "v": [{"n": "S", "p": 34.95}, {"n": "M", "p": 36.95}, {"n": "L", "p": 39.95}], "i": "Na het zwemmen, de regen of het badje: trek de badjas aan en je hond droogt zichzelf terwijl hij uitrust. Microvezel neemt veel vocht op en droogt snel.", "b": ["Absorbeert tot 5x zijn gewicht", "Klittenband aan buik en nek", "Capuchon voor de kop", "Wasbaar op 40 °C"], "s": ["Materiaal: microvezel", "Kleur: zand"], "f": [["Hoe lang moet mijn hond hem dragen?", "10–20 minuten is meestal genoeg. Daarna kun je eventueel nog nadrogen met een handdoek."]], "w": "Laat je hond niet onbeheerd met de badjas aan."}, {"h": "speelgoedmand-vilt", "t": "Speelgoedmand vilt", "c": "Thuis", "l": "L1", "v": [{"n": "Standaard – Ø 35 cm", "p": 34.95}], "i": "Alle speeltjes op één plek, en een mooi accent in je interieur. Stevig vilt dat zijn vorm houdt, met handgrepen.", "b": ["Stevig vilt, houdt zijn vorm", "Handgrepen", "Opvouwbaar voor opslag", "Ook voor plaids en riemen"], "s": ["Materiaal: polyester vilt", "Afmeting ca. Ø 35 x 30 cm", "Kleur: gemêleerd grijs"], "f": [["Mag mijn hond zelf zijn speelgoed eruit pakken?", "Ja, dat is juist leuk. Let op dat hij niet op de mand zelf gaat kauwen."]], "w": "Geen speelgoed. Plastic verpakking buiten bereik van kinderen en dieren houden."}, {"h": "cadeauset-nieuwe-pup", "t": "Cadeauset Nieuwe pup", "c": "Cadeaus", "l": "L2", "v": [{"n": "XS-tuig", "p": 89.95}, {"n": "S-tuig", "p": 89.95}], "i": "Alles om goed te beginnen, in één doos: een zacht Y-tuig, de verstelbare biothane riem, een slowfeeder en een touwspeelgoedset. Een cadeau waar baasje én pup blij van worden.", "b": ["4 producten, voordeliger dan los", "Rustige, bij elkaar passende kleuren", "Inclusief welkomstkaart met tips voor de eerste weken"], "s": ["Inhoud: Y-tuig (XS of S), biothane riem 2 m, slowfeeder 500 ml, touwset 3-delig"], "f": [["Kan ik het tuig ruilen voor een andere maat?", "Ja, binnen 30 dagen. Neem contact op, dan regelen we het."]], "w": "Alleen onder toezicht gebruiken. Kies een formaat dat je hond niet in zijn geheel kan doorslikken. Verwijder beschadigd speelgoed direct. Dit is geen kinderspeelgoed. Controleer voor elk gebruik op slijtage, scheurtjes en de werking van sluitingen. Laat je hond nooit onbeheerd achter met tuig, halsband of lijn om. Niet gebruiken voor klimmen, trekken van lasten of als veiligheidsgordel. Juiste pasvorm: twee vingers ruimte."}], "blogs": [{"slug": "welke-maat-hondenmand", "t": "Welke maat hondenmand heeft mijn hond nodig? Zo meet je het in 2 minuten", "d": "Te kleine mand, onrustige hond. Zo meet je je hond goed en kies je de juiste maat hondenmand, met een handige tabel per ras.", "html": "<p>Een mand die te klein is, wordt links laten liggen. Een mand die veel te groot is, voelt voor sommige honden juist onveilig. Gelukkig is de juiste maat snel bepaald: met een meetlint en twee minuten weet je het.<\/p>\n<h2>Stap 1: kijk hoe je hond slaapt<\/h2>\n<p>Niet elke hond slaapt hetzelfde, en dat bepaalt welk soort mand en welke maat past.<\/p>\n<ul><li><strong>Languit liggers<\/strong> strekken hun poten uit en liggen vaak op hun zij. Zij hebben een rechthoekige, platte mand nodig met genoeg lengte.<\/li><li><strong>Oprollers<\/strong> liggen in een balletje, met hun neus onder hun staart. Een ronde of donutmand met een hoge rand geeft hen een geborgen gevoel.<\/li><li><strong>Tegen-de-rand-leggers<\/strong> leggen hun kop graag op iets. Kies dan een mand met een opstaande rand aan minstens één kant.<\/li><\/ul>\n<p>Kijk een paar dagen hoe je hond op de bank, de vloer of in zijn huidige mand ligt. Hij laat het je vanzelf zien.<\/p>\n<h2>Stap 2: meet je hond<\/h2>\n<p>Je hebt een zacht meetlint nodig. Heb je dat niet, gebruik dan een touwtje en leg het daarna langs een rolmaat.<\/p>\n<p><strong>Voor een rechthoekige mand:<\/strong> meet je hond als hij languit ligt, van het puntje van zijn neus tot de aanzet van zijn staart. Tel daar <strong>15 tot 20 centimeter<\/strong> bij op. Dat is de minimale binnenlengte van de mand.<\/p>\n<p><strong>Voor een ronde of donutmand:<\/strong> meet je hond als hij opgerold ligt, van neus tot staartaanzet. Kies een diameter die <strong>10 tot 15 centimeter<\/strong> groter is.<\/p>\n<p>Let op: de buitenmaat van een mand met dikke randen is vaak 10 tot 20 centimeter groter dan het ligoppervlak. Kijk dus altijd naar de binnenmaat.<\/p>\n<h2>Indicatie per formaat<\/h2>\n<div class=\"tw\"><table><thead><tr><th>Formaat hond<\/th><th>Voorbeelden<\/th><th>Rechthoekig (binnenmaat)<\/th><th>Rond (diameter)<\/th><\/tr><\/thead><tbody><tr><td>Klein (tot 10 kg)<\/td><td>Chihuahua, Jack Russell, Shih Tzu<\/td><td>ca. 60–70 cm<\/td><td>50 cm<\/td><\/tr><tr><td>Middel (10–25 kg)<\/td><td>Beagle, Cocker Spaniël, Border Collie<\/td><td>ca. 80–90 cm<\/td><td>70 cm<\/td><\/tr><tr><td>Groot (25–40 kg)<\/td><td>Labrador, Golden Retriever, Herder<\/td><td>ca. 100–110 cm<\/td><td>90 cm<\/td><\/tr><tr><td>Zeer groot (40+ kg)<\/td><td>Berner Sennen, Duitse Dog<\/td><td>120 cm of meer<\/td><td>—<\/td><\/tr><\/tbody><\/table><\/div>\n<p>Dit is een indicatie: binnen een ras kunnen honden flink verschillen. Je eigen meting is altijd beter.<\/p>\n<h2>Tussen twee maten?<\/h2>\n<p>Kies de grotere maat. Honden draaien vaak een paar rondjes voor ze gaan liggen en strekken zich in hun slaap uit. Een uitzondering zijn angstige honden of kleine honden die graag ingepakt liggen: voor hen is een donutmand in de passende maat fijner dan een te grote platte mand.<\/p>\n<h2>Puppy? Denk vooruit<\/h2>\n<p>Een pup groeit snel. Koop je nu een kleine mand, dan heb je er over een paar maanden weer een nodig. Twee opties:<\/p>\n<ol><li>Koop meteen de maat voor het volwassen formaat en maak de mand kleiner met een opgerolde plaid tegen de rand.<\/li><li>Begin met een goedkoop benchkussen en koop de mooie mand als je hond volgroeid is.<\/li><\/ol>\n<h2>Oudere hond of grote rassen? Let op de ondersteuning<\/h2>\n<p>Bij oudere honden en grote rassen is een <strong>orthopedische mand met traagschuim<\/strong> het overwegen waard. Het schuim vormt zich naar het lichaam en verdeelt het gewicht beter dan een losse vulling, die na een tijdje platgelegen raakt. Een lage instap maakt het makkelijker om in en uit de mand te stappen. Heeft je hond last van zijn gewrichten, overleg dan ook met je dierenarts.<\/p>\n<h2>Kort samengevat<\/h2>\n<ol><li>Kijk hoe je hond slaapt: languit, opgerold of tegen de rand.<\/li><li>Meet van neus tot staartaanzet.<\/li><li>Tel er 15–20 cm (rechthoekig) of 10–15 cm (rond) bij op.<\/li><li>Twijfel je, kies de grotere maat.<\/li><\/ol>\n<p>Wil je persoonlijk advies? Mail de maten en het ras van je hond naar info@hyggehond.nl, dan denken we met je mee. Of bekijk onze <a href=\"#maatgids\">maatgids<\/a> en <a href=\"#c-rust-slapen\">alle manden<\/a>.<\/p>"}, {"slug": "puppy-uitzet-checklist", "t": "Puppy uitzet: de eerste spullen voor je pup (en wat je kunt overslaan)", "d": "Een pup in huis? Deze checklist laat zien welke spullen je echt nodig hebt in de eerste weken, en waar je beter even mee kunt wachten.", "html": "<p>Een pup in huis halen is spannend, en de verleiding is groot om alles te kopen wat je tegenkomt. Toch heb je in de eerste weken maar een handvol spullen écht nodig. Deze checklist helpt je kiezen.<\/p>\n<h2>De basis: dit heb je nodig vóór dag 1<\/h2>\n<p><strong>1. Een veilige slaapplek.<\/strong> Een bench met een zacht benchkussen, of een mand op een rustige plek in huis. Veel pups vinden een bench fijn, omdat het voelt als een eigen holletje. Leg er een plaid in die naar het nest of naar jou ruikt.<\/p>\n<p><strong>2. Een tuig en een lichte riem.<\/strong> Een zacht Y-tuig drukt niet op de keel en laat de schouders vrij bewegen, wat fijn is voor een groeiend lijf. Kies een verstelbaar tuig, want je pup groeit snel. Een lichte riem van 1,5 tot 2 meter is genoeg voor de eerste wandelingetjes.<\/p>\n<p><strong>3. Een halsband met penning.<\/strong> Voor het adresplaatje of de penning. Je pup is verplicht gechipt en geregistreerd; een penning met je telefoonnummer is een extra zekerheid.<\/p>\n<p><strong>4. Voer- en drinkbak.<\/strong> Kies bakken die niet makkelijk omvallen of schuiven. Is je pup een schrokker? Dan is een slowfeeder een goede investering.<\/p>\n<p><strong>5. Puppyvoer.<\/strong> Vraag de fokker of het asiel welk voer de pup nu krijgt en houd dat de eerste weken aan.<\/p>\n<p><strong>6. Kauw- en speelgoed.<\/strong> Pups wisselen hun tanden en willen kauwen. Zorg voor veilig kauwspeelgoed van natuurrubber en wat zachte touwen. Dan blijven je meubels en schoenen heel.<\/p>\n<p><strong>7. Poepzakjes.<\/strong> Met een houder aan de riem vergeet je ze nooit.<\/p>\n<h2>Handig, maar het mag ook later<\/h2>\n<ul><li><strong>Snuffelmat of puzzel:<\/strong> geweldig om je pup mentaal te vermoeien, en vaak al vanaf een paar maanden leuk.<\/li><li><strong>Likmat:<\/strong> helpt bij rust, bijvoorbeeld als je pup moet wennen aan alleen zijn.<\/li><li><strong>Autostoel of -hoes:<\/strong> zodra je pup vaker meegaat.<\/li><li><strong>Borstel:<\/strong> begin al jong met kort borstelen, zodat je pup gewend raakt aan verzorging.<\/li><\/ul>\n<h2>Wat je (nog) kunt overslaan<\/h2>\n<ul><li><strong>Een grote, dure mand.<\/strong> Pups slopen weleens iets en groeien er snel uit. Begin met een benchkussen en koop de mooie mand later.<\/li><li><strong>Te veel speelgoed tegelijk.<\/strong> Een paar stuks die je afwisselt, blijft interessanter.<\/li><li><strong>Kleding:<\/strong> alleen nodig voor kleine, kortharige rassen in de winter.<\/li><\/ul>\n<h2>Tips voor de eerste dagen<\/h2>\n<ul><li>Geef je pup rust: een pup slaapt 16 tot 20 uur per dag.<\/li><li>Neem niet meteen al het bezoek mee naar huis. Laat je pup eerst wennen aan zijn nieuwe omgeving.<\/li><li>Begin vanaf dag één met korte, positieve oefeningen: zijn naam, \"zit\" en zindelijkheid.<\/li><li>Plan een eerste afspraak bij de dierenarts voor een controle en het vaccinatieschema.<\/li><\/ul>\n<h2>Liever alles in één keer?<\/h2>\n<p>Onze <a href=\"#p-cadeauset-nieuwe-pup\">Cadeauset Nieuwe pup<\/a> bevat een zacht Y-tuig, een verstelbare biothane riem, een slowfeeder en een touwspeelgoedset. Ook leuk om cadeau te geven aan iemand met een nieuwe pup.<\/p>"}, {"slug": "tuig-of-halsband", "t": "Tuig of halsband: wat is beter voor je hond?", "d": "Twijfel je tussen een tuig en een halsband? We zetten de voor- en nadelen op een rij en laten zien hoe je een tuig goed laat passen.", "html": "<p>Het is een van de meest gestelde vragen van baasjes: tuig of halsband? Het eerlijke antwoord: het hangt af van je hond en waarvoor je het gebruikt. In dit artikel zetten we de voor- en nadelen op een rij.<\/p>\n<h2>De halsband<\/h2>\n<p><strong>Voordelen<\/strong><\/p>\n<ul><li>Makkelijk om en af te doen.<\/li><li>Handig voor het penninkje met je telefoonnummer.<\/li><li>Licht en weinig hinderlijk; fijn voor honden die rustig aan de lijn lopen.<\/li><\/ul>\n<p><strong>Nadelen<\/strong><\/p>\n<ul><li>Trekt je hond aan de lijn, dan komt alle druk op de hals en de keel terecht.<\/li><li>Minder geschikt voor kortsnuitige rassen (zoals de Franse bulldog of mopshond) en voor honden met luchtweg- of nekklachten.<\/li><li>Sommige honden kunnen er met een smal kopje uit glippen.<\/li><\/ul>\n<h2>Het tuig<\/h2>\n<p><strong>Voordelen<\/strong><\/p>\n<ul><li>De druk wordt verdeeld over borst en schouders in plaats van de hals.<\/li><li>Meer controle, vooral met een handgreep op de rug.<\/li><li>Moeilijker om uit te ontsnappen, mits het goed past.<\/li><\/ul>\n<p><strong>Nadelen<\/strong><\/p>\n<ul><li>Iets meer werk om aan te doen.<\/li><li>Een slecht passend tuig kan schuren of de schouderbeweging beperken.<\/li><\/ul>\n<h2>Let op de vorm: kies een Y-tuig<\/h2>\n<p>Niet elk tuig is hetzelfde. Een tuig met een horizontale band over de borst kan de schouders in hun beweging beperken. Een <strong>Y-tuig<\/strong> loopt vanaf de nek in een Y-vorm tussen de voorpoten door, waardoor de schouders vrij kunnen bewegen. Veel hondentrainers en fysiotherapeuten raden deze vorm daarom aan.<\/p>\n<h2>Zo laat je een tuig goed passen<\/h2>\n<ol><li><strong>Meet de borstomvang<\/strong> op het breedste punt, net achter de voorpoten, en de <strong>nekomvang<\/strong>.<\/li><li>Stel het tuig zo af dat je <strong>twee vingers<\/strong> onder elke band kunt schuiven.<\/li><li>De borstband moet ruim achter de oksels zitten, zodat er niets schuurt.<\/li><li>De Y moet midden op het borstbeen liggen, niet op de keel.<\/li><li>Controleer na een wandeling of er geen rode plekken of kale plekjes zijn.<\/li><\/ol>\n<h2>Onze conclusie<\/h2>\n<ul><li><strong>Trekt je hond<\/strong> of is hij jong en wild? Kies een goed passend Y-tuig.<\/li><li><strong>Loopt je hond rustig<\/strong> aan de lijn? Een halsband kan prima, en is sowieso handig voor de penning.<\/li><li><strong>Lange lijn of sleeplijn?<\/strong> Gebruik die <strong>altijd aan een tuig<\/strong>, nooit aan een halsband. Een plotselinge ruk aan een lange lijn kan de nek ernstig belasten.<\/li><\/ul>\n<p>Veel baasjes gebruiken allebei: de halsband voor het penninkje, het tuig voor de wandeling.<\/p>\n<p><strong>Let op:<\/strong> een tuig lost trekken aan de lijn niet op, het maakt het alleen veiliger. Wil je dat je hond losjes loopt, dan is training de sleutel. Een hondenschool in de buurt kan je daarbij helpen.<\/p>\n<p>Bekijk ons <a href=\"#p-y-tuig-zacht-gevoerd\">zachte Y-tuig<\/a> en de bijpassende <a href=\"#p-verstelbare-riem-biothane\">biothane riem<\/a>.<\/p>"}, {"slug": "hond-vermaken-binnen", "t": "Hond vermaken binnen: 10 ideeën voor regenachtige dagen", "d": "Regent het en wil je hond actie? Met deze 10 ideeën voor binnen, van snuffelspelletjes tot trucjes, heb je een tevreden, moe hondje.", "html": "<p>Nederlands weer: het is nat, het waait, en je hond kijkt je verwachtingsvol aan. Goed nieuws: met hersenwerk maak je een hond vaak net zo moe als met een lange wandeling. Tien minuten snuffelen staat volgens veel trainers gelijk aan een flinke wandeling. Hier zijn tien ideeën.<\/p>\n<h2>Snuffelen en zoeken<\/h2>\n<p><strong>1. Snuffelmat.<\/strong> Strooi wat brokjes tussen de stroken van een snuffelmat en laat je hond zoeken. Begin makkelijk, met brokjes bovenop, en verstop ze steeds dieper.<\/p>\n<p><strong>2. Zoekspel door het huis.<\/strong> Laat je hond zitten en wachten, verstop een paar snoepjes in de kamer en zeg \"zoek\". Maak het moeilijker door ze achter deuren of onder een kussen te leggen.<\/p>\n<p><strong>3. Bekertjesspel.<\/strong> Zet drie bekers neer en leg onder één een snoepje. Schuif ze rond en laat je hond kiezen. Goed geraden? Beloning.<\/p>\n<p><strong>4. Handdoekrol.<\/strong> Rol snoepjes op in een oude handdoek en laat je hond hem uitrollen.<\/p>\n<h2>Puzzelen<\/h2>\n<p><strong>5. Puzzelspeelgoed.<\/strong> Schuif-, draai- en kliksystemen dagen je hond uit om zijn snoepjes te verdienen. Begin op een laag niveau, zodat hij succes ervaart.<\/p>\n<p><strong>6. Gevulde kauwbal.<\/strong> Vul een natuurrubber bal met wat natvoer of pindakaas (zonder xylitol) en leg hem een nacht in de vriezer. Goed voor een kwartier tot een halfuur rustig bezig zijn.<\/p>\n<h2>Rust en ontspanning<\/h2>\n<p><strong>7. Likmat.<\/strong> Likken werkt kalmerend. Smeer er yoghurt, kwark of natvoer op. Ideaal tijdens onweer, op momenten dat je wilt dat je hond tot rust komt, of in de <strong>vuurwerkperiode<\/strong>: begin dan al ruim van tevoren met likken op een rustige plek, zodat je hond het met iets fijns associeert.<\/p>\n<h2>Leren en spelen<\/h2>\n<p><strong>8. Een nieuw trucje.<\/strong> Pootje geven, draaien, \"high five\" of \"ga op je plek\". Korte sessies van 5 minuten zijn genoeg. Eindig altijd met iets wat je hond al goed kan.<\/p>\n<p><strong>9. Opruimen.<\/strong> Leer je hond zijn speeltjes in een mand te leggen. Handig én vermoeiend.<\/p>\n<p><strong>10. Trekspel.<\/strong> Een rondje trekken met een touw is goede beweging en versterkt de band. Leer je hond \"los\" en stop het spel als hij te opgewonden wordt.<\/p>\n<h2>Tips<\/h2>\n<ul><li>Wissel het speelgoed af: leg een deel weg en haal het na een week weer tevoorschijn. Dan is het weer nieuw.<\/li><li>Snoepjes tellen mee voor de dagelijkse hoeveelheid voer. Gebruik daarom (een deel van) de gewone brokjes.<\/li><li>Laat je hond nooit alleen met speelgoed dat kapot kan gaan.<\/li><li>Ook binnen geldt: na actie volgt rust. Een goede mand helpt je hond echt te ontspannen.<\/li><\/ul>\n<p>Bekijk onze <a href=\"#c-spelen-verrijking\">spelen &amp; verrijking<\/a> collectie, met de snuffelmat, likmatten en puzzelspeelgoed.<\/p>"}, {"slug": "hond-in-de-auto", "t": "Met je hond in de auto: zo reis je veilig en ontspannen", "d": "Ga je met je hond op pad? Lees hoe je je hond veilig vervoert in de auto, hoe je wagenziekte voorkomt en wat je meeneemt.", "html": "<p>Naar het bos, het strand of op vakantie: je hond gaat graag mee. Met de juiste voorbereiding is de autorit voor jullie allebei ontspannen en veilig.<\/p>\n<h2>Waarom je hond vastzetten?<\/h2>\n<p>Een losse hond in de auto is gevaarlijk. Bij een noodstop of aanrijding schiet hij met grote kracht naar voren, wat gevaarlijk is voor hem én voor jou. Daarnaast kan een rondlopende hond je afleiden of je zicht belemmeren. De verkeersregels in Nederland en België vereisen dat niets of niemand je hindert tijdens het rijden. Een losse hond kan daardoor een boete opleveren.<\/p>\n<h2>De opties op een rij<\/h2>\n<p><strong>1. Bench in de kofferbak.<\/strong> Een goed passende, stevige bench die vastgezet is, is voor de meeste honden de veiligste optie. Er zijn ook speciale, crashgeteste benches.<\/p>\n<p><strong>2. Tuig met gordeladapter op de achterbank.<\/strong> De hond zit vast aan de gordel met een kort lijntje. Gebruik dit <strong>altijd aan een tuig<\/strong>, nooit aan een halsband.<\/p>\n<p><strong>3. Autostoel voor kleine honden.<\/strong> Een verhoogde stoel waarin een kleine hond stabiel zit en naar buiten kan kijken, wat kan helpen tegen wagenziekte. Bevestig hem goed aan de stoel en maak je hond vast aan zijn tuig. Let op: de meeste autostoelen zijn niet crashgetest en zijn vooral bedoeld voor comfort en stabiliteit.<\/p>\n<p><strong>4. Hondenrek.<\/strong> Een scheidingsrek tussen kofferbak en achterbank voorkomt dat je hond naar voren schiet.<\/p>\n<p><strong>Voorin?<\/strong> Liever niet. Een airbag kan een hond ernstig verwonden.<\/p>\n<h2>Wagenziekte voorkomen<\/h2>\n<ul><li>Laat je hond <strong>2 tot 3 uur voor vertrek niet eten<\/strong>.<\/li><li>Begin met korte ritjes naar leuke plekken, zodat je hond de auto met iets positiefs verbindt.<\/li><li>Zorg voor frisse lucht en een rustige rijstijl.<\/li><li>Een verhoogde stoel voor kleine honden helpt sommige honden, omdat ze naar buiten kunnen kijken.<\/li><li>Blijft je hond misselijk? Overleg met je dierenarts.<\/li><\/ul>\n<h2>Checklist voor onderweg<\/h2>\n<ul><li>Water en een opvouwbare bak<\/li><li>Riem en tuig (en een reserve)<\/li><li>Poepzakjes<\/li><li>Een plaid of kussen dat naar thuis ruikt<\/li><li>Een handdoek of badjas voor natte honden<\/li><li>Een waterdichte hoes voor de achterbank<\/li><li>Bij lange ritten: om de 2 uur een pauze om te plassen en te bewegen<\/li><li>Naar het buitenland? Controleer het dierenpaspoort, de rabiësvaccinatie en de regels van het land<\/li><\/ul>\n<h2>Laat je hond nooit alleen in de auto<\/h2>\n<p>Ook bij een graad of 20 en een raampje op een kier loopt de temperatuur in een geparkeerde auto in korte tijd gevaarlijk hoog op. Een hond kan dan binnen enkele minuten oververhit raken. Ook in het voorjaar en najaar met zon: neem je hond mee of laat hem thuis.<\/p>\n<h2>Na een modderige wandeling<\/h2>\n<p>Een waterdichte achterbankhoes en een pootreiniger in de kofferbak schelen veel schoonmaakwerk. Een microvezel badjas droogt je hond terwijl je naar huis rijdt.<\/p>\n<p>Bekijk onze <a href=\"#c-op-pad\">op pad<\/a> collectie met de autostoel, de achterbankhoes en de wandelset.<\/p>"}]};
+const P = DATA.products, BLOGS = DATA.blogs;
+const FREE = 50, SHIP = 4.95;
+const COLS = [
+  { slug: "rust-slapen", name: "Rust & slapen", icon: "bed", intro: "Een goede plek om te slapen is de basis voor een ontspannen hond. Van orthopedische manden voor oudere honden tot een zachte donut voor de oprollers." },
+  { slug: "op-pad", name: "Op pad", icon: "leash", intro: "Alles voor fijne wandelingen en zorgeloos reizen: tuigen die niet knellen, riemen die tegen regen kunnen en slimme spullen voor in de auto." },
+  { slug: "eten-drinken", name: "Eten & drinken", icon: "bowl", intro: "Voerbakken die mooi staan in je keuken en slimme oplossingen voor snelle eters." },
+  { slug: "spelen-verrijking", name: "Spelen & verrijking", icon: "ball", intro: "Een moe hoofd is een tevreden hond. Snuffelen, puzzelen en kauwen voor binnen en buiten." },
+  { slug: "verzorging", name: "Verzorging", icon: "brush", intro: "Minder haren op de bank en schone poten na een modderige wandeling." },
+  { slug: "thuis", name: "Thuis", icon: "basket", intro: "Rustige spullen die een plek verdienen in je interieur." },
+  { slug: "cadeaus", name: "Cadeaus", icon: "gift", intro: "Voor de nieuwe pup in de familie, of voor jezelf. Sets die je meteen kunt gebruiken." }
+];
+const colByName = Object.fromEntries(COLS.map(c => [c.name, c]));
+const NAV = [["c-rust-slapen", "Rust & slapen"], ["c-op-pad", "Op pad"], ["c-eten-spelen", "Eten & spelen"], ["c-cadeaus", "Cadeaus"], ["maatgids", "Maatgids"], ["journal", "Journal"]];
+const BEST = ["orthopedische-hondenmand-rust", "y-tuig-zacht-gevoerd", "snuffelmat", "cadeauset-nieuwe-pup"];
+
+const ICONS = {
+  bed: '<path d="M3 15.5c0-2.8 2-4.5 4.5-4.5h9c2.5 0 4.5 1.7 4.5 4.5V18H3z"/><path d="M6.5 11c.3-1.8 2.4-3 5.5-3s5.2 1.2 5.5 3"/><path d="M4 18v1.5M20 18v1.5"/>',
+  leash: '<circle cx="17.5" cy="6.5" r="2.8"/><path d="M15.5 8.5C11 13 9 15 4 20"/><path d="M6.5 15.5l2 2"/>',
+  bowl: '<path d="M3 12h18c-.4 4-4.2 7-9 7s-8.6-3-9-7z"/><path d="M8.5 9.5c.3-1.3 1.2-2 2.3-2M13 9c.3-1.3 1.2-2 2.3-2"/>',
+  ball: '<circle cx="12" cy="12" r="8"/><path d="M5 9.5c3.5 1.5 10.5 1.5 14 0M5 14.5c3.5-1.5 10.5-1.5 14 0"/>',
+  brush: '<rect x="4" y="12" width="12" height="5" rx="1"/><path d="M6.5 12V8M9 12V7M11.5 12V7M14 12V8"/><path d="M16 14.5h4.5"/>',
+  basket: '<path d="M4 10h16l-1.8 9H5.8z"/><path d="M8 10l4-5 4 5"/><path d="M9 13.5v3M12 13.5v3M15 13.5v3"/>',
+  gift: '<rect x="4" y="10.5" width="16" height="9.5" rx="1"/><path d="M3 7.5h18v3H3zM12 7.5V20"/><path d="M12 7.5C10.5 4.8 7.5 4.5 7.5 6S10 7.5 12 7.5c2 0 4.5 0 4.5-1.5S13.5 4.8 12 7.5z"/>',
+  truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/>',
+  ret: '<path d="M9 7H4v5"/><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/>',
+  paw: '<ellipse cx="12" cy="15" rx="4.5" ry="3.8"/><circle cx="6.5" cy="10" r="1.7"/><circle cx="10" cy="6.8" r="1.7"/><circle cx="14" cy="6.8" r="1.7"/><circle cx="17.5" cy="10" r="1.7"/>'
+};
+const svg = (k, sw = 1.3) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const eur = n => n.toLocaleString("nl-NL", { style: "currency", currency: "EUR" });
+const byH = Object.fromEntries(P.map(p => [p.h, p]));
+const pIndex = h => P.findIndex(p => p.h === h);
+function ph(p, cls = "", tag = "") {
+  const mix = 30 + (pIndex(p.h) * 7) % 35;
+  return `<div class="ph ${cls}" style="background:color-mix(in oklab, var(--sand) ${mix}%, var(--bg))">${tag ? `<span class="tag">${tag}</span>` : ""}${svg(colByName[p.c].icon)}</div>`;
+}
+const fromPrice = p => Math.min(...p.v.map(v => v.p));
+
+/* levertijd: werkdagen, cut-off 15:00 */
+function addWorkdays(d, n) { d = new Date(d); while (n > 0) { d.setDate(d.getDate() + 1); const w = d.getDay(); if (w && w < 6) n--; } return d; }
+function deliveryText() {
+  const now = new Date(); let start = new Date(now);
+  if (now.getHours() >= 15 || now.getDay() === 0 || now.getDay() === 6) start = addWorkdays(now, 1);
+  const f = { weekday: "short", day: "numeric", month: "short" };
+  return `${addWorkdays(start, 2).toLocaleDateString("nl-NL", f)} – ${addWorkdays(start, 5).toLocaleDateString("nl-NL", f)}`;
+}
+
+/* winkelwagen */
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("hh-cart") || "[]").filter(i => byH[i.h]); } catch (e) { cart = []; }
+const save = () => { try { localStorage.setItem("hh-cart", JSON.stringify(cart)); } catch (e) {} };
+const subtotal = () => cart.reduce((s, i) => s + byH[i.h].v[i.v].p * i.q, 0);
+const count = () => cart.reduce((s, i) => s + i.q, 0);
+function addToCart(h, v) {
+  const f = cart.find(i => i.h === h && i.v === v);
+  f ? f.q++ : cart.push({ h, v, q: 1 });
+  save(); renderCart(); openDrawer();
+}
+function setQty(idx, d) { cart[idx].q += d; if (cart[idx].q <= 0) cart.splice(idx, 1); save(); renderCart(); }
+function shipCost(st) { return st >= FREE || st === 0 ? 0 : SHIP; }
+function parcels() { return new Set(cart.map(i => byH[i.h].l)).size; }
+function renderCart() {
+  const n = count(), st = subtotal(), rest = Math.max(0, FREE - st);
+  const b = document.getElementById("cartCount"); b.hidden = n === 0; b.textContent = n;
+  document.getElementById("cartBtn").setAttribute("aria-label", `Winkelwagen, ${n} ${n === 1 ? "artikel" : "artikelen"}`);
+  document.getElementById("fsb").innerHTML = n === 0 ? `<span class="muted">Gratis verzending vanaf ${eur(FREE)}</span>` :
+    (rest > 0 ? `<span>Nog <strong>${eur(rest)}</strong> tot gratis verzending</span>` : `<span>Je bestelling wordt <strong>gratis verzonden</strong>.</span>`) +
+    `<div class="bar" role="progressbar" aria-label="Voortgang naar gratis verzending" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(100, Math.round(st / FREE * 100))}"><i style="width:${Math.min(100, st / FREE * 100)}%"></i></div>`;
+  const body = document.getElementById("drawerBody"), foot = document.getElementById("drawerFoot");
+  if (!n) {
+    body.innerHTML = `<p>Je winkelwagen is nog leeg.</p><a class="btn ghost" href="#c-all" data-close>Bekijk alle producten</a>`;
+    foot.innerHTML = ""; return;
+  }
+  const pc = parcels();
+  body.innerHTML = cart.map((i, idx) => { const p = byH[i.h], v = p.v[i.v]; return `
+    <div class="line">${ph(p)}<div><a href="#p-${p.h}" data-close style="text-decoration:none;font-weight:500">${esc(p.t)}</a>
+      <div class="muted" style="font-size:.85rem">${esc(v.n)} · levering 2–5 werkdagen</div>
+      <div class="qty"><button aria-label="Eén minder" data-q="${idx}" data-d="-1">−</button><span aria-live="polite">${i.q}</span><button aria-label="Eén meer" data-q="${idx}" data-d="1">+</button></div></div>
+      <div style="font-variant-numeric:tabular-nums">${eur(v.p * i.q)}</div></div>`; }).join("") +
+    (pc > 1 ? `<p class="split" role="status">Je bestelling komt in ${pc} pakketten, omdat de producten bij verschillende Europese partners liggen. Je ontvangt per pakket een trackinglink. Dit kost je niets extra.</p>` : "") +
+    crossSellCart();
+  const sc = shipCost(st);
+  foot.innerHTML = `<div class="sum"><span>Subtotaal</span><span>${eur(st)}</span></div>
+    <div class="sum"><span>Verzending</span><span>${sc ? eur(sc) : "Gratis"}</span></div>
+    <div class="sum total"><span>Totaal incl. btw</span><span>${eur(st + sc)}</span></div>
+    <a class="btn full" href="#checkout" data-close>Afrekenen</a>
+    <div class="paylogos" style="justify-content:center"><span>iDEAL | Wero</span><span>Bancontact</span><span>Apple Pay</span><span>Klarna</span></div>`;
+}
+function crossSellCart() {
+  const inCart = new Set(cart.map(i => i.h));
+  const pairs = { "y-tuig-zacht-gevoerd": "verstelbare-riem-biothane", "orthopedische-hondenmand-rust": "hondenplaid-teddy-waterafstotend", "verstelbare-riem-biothane": "halsband-biothane", "donutmand-nest": "hondenplaid-teddy-waterafstotend", "slowfeeder-voerbak": "likmat-set", "snuffelmat": "likmat-set" };
+  const sug = cart.map(i => pairs[i.h]).find(h => h && !inCart.has(h)) || ["snuffelmat", "likmat-set"].find(h => !inCart.has(h));
+  if (!sug) return "";
+  const p = byH[sug];
+  return `<div style="border-top:1px solid var(--line);padding-top:1rem;display:grid;gap:.6rem"><span class="eyebrow">Past erbij</span>
+    <div class="line">${ph(p)}<div><span style="font-weight:500">${esc(p.t)}</span><div class="muted" style="font-size:.85rem">${eur(p.v[0].p)}</div></div>
+    <button class="btn ghost" style="padding:0 .8rem" data-add="${p.h}" aria-label="${esc(p.t)} toevoegen">+</button></div></div>`;
+}
+
+/* drawer */
+let lastFocus = null;
+const drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim");
+function openDrawer() { lastFocus = document.activeElement; drawer.hidden = false; scrim.hidden = false; document.getElementById("drawerClose").focus(); }
+function closeDrawer() { drawer.hidden = true; scrim.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+document.getElementById("cartBtn").onclick = openDrawer;
+document.getElementById("drawerClose").onclick = closeDrawer;
+scrim.onclick = closeDrawer;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !drawer.hidden) closeDrawer(); });
+drawer.addEventListener("click", e => {
+  const q = e.target.closest("[data-q]"); if (q) setQty(+q.dataset.q, +q.dataset.d);
+  const a = e.target.closest("[data-add]"); if (a) addToCart(a.dataset.add, 0);
+  if (e.target.closest("[data-close]")) closeDrawer();
+});
+
+/* menu */
+const menuBtn = document.getElementById("menuBtn"), mnav = document.getElementById("mnav");
+function navHtml(cur) { return NAV.map(([h, t]) => `<a href="#${h}"${cur === h ? ' aria-current="page"' : ""}>${esc(t)}</a>`).join(""); }
+menuBtn.onclick = () => { const o = mnav.hidden; mnav.hidden = !o; menuBtn.setAttribute("aria-expanded", String(o)); };
+
+/* views */
+const main = document.getElementById("main");
+function card(p) {
+  return `<a class="card" href="#p-${p.h}">${ph(p)}<h3>${esc(p.t)}</h3><span class="price">${p.v.length > 1 ? "vanaf " : ""}${eur(fromPrice(p))}</span></a>`;
+}
+function viewHome() {
+  const art = byH["orthopedische-hondenmand-rust"];
+  return `
+  <section class="hero"><div class="wrap">
+    <div><span class="eyebrow">Mooie basics voor je hond</span>
+      <h1 style="margin-top:.6rem">Rust in huis, plezier op pad.</h1>
+      <p class="lead">Mooie basics voor je hond, getest door [NAAM HOND] en binnen 2–5 werkdagen bij je thuis.</p>
+      <div class="ctas"><a class="btn" href="#c-rust-slapen">Shop manden</a><a class="btn ghost" href="#c-op-pad">Op pad →</a></div></div>
+    <figure class="hero-art" style="margin:0">
+      <svg viewBox="0 0 500 400" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+        <rect x="0" y="290" width="500" height="110" style="fill:color-mix(in oklab, var(--sand) 80%, var(--bg))"/>
+        <rect x="70" y="210" width="360" height="100" rx="40" style="fill:var(--bg)"/>
+        <rect x="95" y="190" width="310" height="60" rx="30" style="fill:color-mix(in oklab, var(--sand) 40%, var(--bg))"/>
+        <ellipse cx="250" cy="215" rx="105" ry="38" style="fill:var(--accent)" opacity=".85"/>
+        <circle cx="160" cy="200" r="30" style="fill:var(--accent)"/>
+        <ellipse cx="140" cy="183" rx="11" ry="20" style="fill:var(--accent)" transform="rotate(-25 140 183)"/>
+        <path d="M150 205q8 6 16 0" fill="none" style="stroke:var(--bg)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M352 222q40-10 45 15" fill="none" style="stroke:var(--accent)" stroke-width="16" stroke-linecap="round"/>
+        <circle cx="400" cy="70" r="26" style="fill:var(--bg)" opacity=".7"/>
+      </svg>
+      <figcaption>Hier komt je eigen foto: [NAAM HOND] in de mand Rust</figcaption>
+    </figure>
+  </div></section>
+
+  <section class="block tint"><div class="wrap promises">
+    <div class="promise">${svg("paw", 1.5)}<h3>Getest door [NAAM HOND]</h3><p class="muted">Elk product gaat eerst bij ons thuis mee op proef. Wat niet goed genoeg is, komt de winkel niet in.</p></div>
+    <div class="promise">${svg("truck", 1.5)}<h3>Snel geleverd vanuit Europa</h3><p class="muted">Al onze partners hebben een magazijn in de EU. Geen douane, geen weken wachten.</p></div>
+    <div class="promise">${svg("ret", 1.5)}<h3>Eerlijk, zonder trucs</h3><p class="muted">Geen nep-aftelklokken of opgeblazen "van"-prijzen. Wel 30 dagen bedenktijd.</p></div>
+  </div></section>
+
+  <section class="block"><div class="wrap">
+    <div class="sec-head"><h2>Shop per categorie</h2><a href="#c-all">Alle producten</a></div>
+    <div class="cats">${[["rust-slapen", "Rust & slapen", "bed"], ["op-pad", "Op pad", "leash"], ["eten-spelen", "Eten & spelen", "bowl"], ["cadeaus", "Cadeaus", "gift"]].map(([s, n, i], k) =>
+      `<a class="cat" href="#c-${s}"><div class="ph" style="background:color-mix(in oklab, var(--sand) ${35 + k * 9}%, var(--bg))">${svg(i)}</div><span>${esc(n)}</span></a>`).join("")}</div>
+  </div></section>
+
+  <section class="block tint"><div class="wrap">
+    <div class="sec-head"><h2>Favorieten van [NAAM HOND]</h2><a href="#c-all">Bekijk alles</a></div>
+    <div class="grid">${BEST.map(h => card(byH[h])).join("")}</div>
+  </div></section>
+
+  <section class="block"><div class="wrap story">
+    ${ph(art, "", "Foto: Dylan met [NAAM HOND]")}
+    <div><span class="eyebrow">Ons verhaal</span><h2 style="margin-top:.5rem">Hoi, ik ben Dylan. En dit is [NAAM HOND].</h2>
+    <p>Hyggehond begon met een simpele zoektocht: een mand die mijn hond fijn vond én die niet uit de toon viel in de woonkamer. Dat bleek lastiger dan gedacht. Nu zoeken we het voor je uit: we testen, kiezen en houden alleen wat echt goed is.</p>
+    <p><a href="#over-ons">Lees ons verhaal →</a></p></div>
+  </div></section>
+
+  <section class="block tint"><div class="wrap">
+    <h2>Wat andere baasjes zeggen</h2>
+    <div class="empty-reviews" style="margin-top:1.2rem"><strong>Nog geen reviews</strong>
+      <p class="muted">Dit blok verschijnt vanaf 5 echte reviews. Alleen klanten die echt bij ons hebben besteld kunnen een review plaatsen, en we plaatsen ook kritische reviews.</p></div>
+  </div></section>
+
+  <section class="block"><div class="wrap newsletter">
+    <div><h2>Twijfel je over de maat?</h2><p class="muted" style="margin-top:.5rem">Met een meetlint en twee minuten weet je het zeker.</p></div>
+    <div><a class="btn ghost" href="#maatgids">Naar de maatgids</a></div>
+  </div></section>
+
+  <section class="block tint"><div class="wrap newsletter">
+    <div><h2>Tips voor een blije hond, en 10% op je eerste bestelling</h2>
+      <p class="muted" style="margin-top:.5rem">Eén keer per twee weken: praktische tips, nieuwe producten en af en toe iets leuks. Afmelden kan altijd.</p></div>
+    <div><form class="nl-form" id="nlForm" novalidate>
+      <label style="flex:1 1 220px">E-mailadres<input type="email" id="nlEmail" autocomplete="email" required placeholder="naam@voorbeeld.nl"></label>
+      <button class="btn" style="align-self:end">Aanmelden</button></form>
+      <p class="muted" style="font-size:.82rem;margin-top:.5rem">We gebruiken je e-mailadres alleen voor de nieuwsbrief. Lees onze <a href="#privacy">privacyverklaring</a>.</p>
+      <p class="ok-msg" id="nlOk" hidden style="margin-top:.6rem">Bijna klaar. Bevestig je aanmelding via de e-mail die we je net stuurden. <span class="muted">(Preview: er is niets verstuurd.)</span></p></div>
+  </div></section>`;
+}
+function viewCollection(slug) {
+  let title, intro, list;
+  if (slug === "all") { title = "Alle producten"; intro = "Ons hele assortiment: klein, gecureerd en getest door [NAAM HOND]."; list = P; }
+  else if (slug === "eten-spelen") { title = "Eten & spelen"; intro = "Voerbakken, slowfeeders, snuffelmatten en speelgoed om je hond lekker bezig te houden."; list = P.filter(p => p.c === "Eten & drinken" || p.c === "Spelen & verrijking"); }
+  else { const c = COLS.find(c => c.slug === slug); if (!c) return null; title = c.name; intro = c.intro; list = P.filter(p => p.c === c.name); }
+  const subs = [...new Set(list.map(p => p.c))];
+  return `<div class="wrap">
+    <nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>${esc(title)}</span></nav>
+    <div class="col-head"><h1>${esc(title)}</h1><p>${esc(intro)}</p></div>
+    <div class="toolbar">
+      <div class="chips" id="chips">${subs.length > 1 ? `<button class="chip" aria-pressed="true" data-f="">Alles</button>` + subs.map(s => `<button class="chip" aria-pressed="false" data-f="${esc(s)}">${esc(s)}</button>`).join("") : `<span class="muted">${list.length} producten</span>`}</div>
+      <label style="flex-direction:row;display:flex;align-items:center;gap:.5rem;font-weight:400">Sorteer
+        <select id="sort"><option value="">Aanbevolen</option><option value="asc">Prijs laag–hoog</option><option value="desc">Prijs hoog–laag</option></select></label>
+    </div>
+    <div class="grid" id="colGrid" style="padding-bottom:3rem"></div>
+  </div>`;
+}
+function bindCollection(slug) {
+  let base = slug === "all" ? P : slug === "eten-spelen" ? P.filter(p => p.c === "Eten & drinken" || p.c === "Spelen & verrijking") : P.filter(p => colByName[p.c].slug === slug);
+  let f = "", s = "";
+  const draw = () => {
+    let l = base.filter(p => !f || p.c === f);
+    if (s) l = [...l].sort((a, b) => s === "asc" ? fromPrice(a) - fromPrice(b) : fromPrice(b) - fromPrice(a));
+    document.getElementById("colGrid").innerHTML = l.map(card).join("");
+  };
+  document.getElementById("chips").onclick = e => { const b = e.target.closest("[data-f]"); if (!b) return; f = b.dataset.f;
+    document.querySelectorAll("#chips .chip").forEach(c => c.setAttribute("aria-pressed", String(c === b))); draw(); };
+  document.getElementById("sort").onchange = e => { s = e.target.value; draw(); };
+  draw();
+}
+let curVar = 0;
+function viewProduct(h) {
+  const p = byH[h]; if (!p) return null;
+  const c = colByName[p.c];
+  curVar = 0;
+  const xs = P.filter(q => q.c === p.c && q.h !== p.h).slice(0, 3);
+  const extra = xs.length < 3 ? P.filter(q => q.c !== p.c && q.h !== p.h && BEST.includes(q.h)).slice(0, 3 - xs.length) : [];
+  return `<div class="wrap">
+    <nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><a href="#c-${c.slug}">${esc(c.name)}</a><span>/</span><span>${esc(p.t)}</span></nav>
+    <div class="pdp">
+      <div class="gallery">${ph(p, "main", "Productfoto volgt")}<div class="thumbs">${[0, 1, 2, 3].map(() => ph(p)).join("")}</div>
+        <p class="ph-note">Plaatshouders. Hier komen 5–7 eigen foto's en een korte video met [NAAM HOND].</p></div>
+      <div class="buy">
+        <div><span class="eyebrow">${esc(p.c)}</span><h1 style="margin-top:.4rem;font-size:clamp(1.6rem,3.5vw,2.3rem)">${esc(p.t)}</h1></div>
+        <div><div class="pprice" id="pPrice">${eur(p.v[0].p)}<small>incl. btw</small></div>
+          <p class="ship-note">Gratis verzending vanaf ${eur(FREE)}, anders ${eur(SHIP)}</p></div>
+        ${p.v.length > 1 ? `<div><div style="display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:.4rem"><span id="sizeLabel">Maat: <strong>${esc(p.v[0].n)}</strong></span><a href="#maatgids">Maatgids</a></div>
+          <div class="sizes" role="group" aria-label="Kies een maat">${p.v.map((v, i) => `<button class="size" aria-pressed="${i === 0}" data-v="${i}">${esc(v.n)}</button>`).join("")}</div></div>` : ""}
+        <p class="stock"><span class="dot" aria-hidden="true"></span><span>Op voorraad · verwachte levering <strong>${deliveryText()}</strong></span></p>
+        <button class="btn full" id="atc">In winkelwagen</button>
+        <div class="paylogos"><span>iDEAL | Wero</span><span>Bancontact</span><span>Visa</span><span>Mastercard</span><span>Apple Pay</span><span>Klarna</span></div>
+        <p>${esc(p.i)}</p>
+        <div>
+          <details class="acc" open><summary>Waarom je dit fijn vindt</summary><div class="in"><ul>${p.b.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></details>
+          <details class="acc"><summary>Specificaties &amp; maten</summary><div class="in"><ul>${p.s.map(x => `<li>${esc(x)}</li>`).join("")}<li>Maten: ${p.v.map(v => esc(v.n)).join(" · ")}</li></ul></div></details>
+          <details class="acc"><summary>Verzending &amp; retour</summary><div class="in"><p>Verzending binnen NL en BE in 2–5 werkdagen, vanuit een Europees magazijn. Gratis vanaf € 50. Je hebt 30 dagen bedenktijd; de kosten voor het terugsturen zijn voor jou, behalve bij een defect of een verkeerde levering. <a href="#retour">Lees meer</a></p></div></details>
+          <details class="acc"><summary>Veelgestelde vragen</summary><div class="in">${p.f.map(([q, a]) => `<p><strong>${esc(q)}</strong><br>${esc(a)}</p>`).join("")}</div></details>
+          <details class="acc"><summary>Productveiligheid</summary><div class="in"><dl class="gpsr">
+            <dt>Fabrikant</dt><dd>[Naam fabrikant], [adres], [e-mail]. Volgt van de leverancier.</dd>
+            <dt>Verantwoordelijke persoon in de EU</dt><dd>Alleen als de fabrikant buiten de EU zit.</dd>
+            <dt>Productidentificatie</dt><dd>HH-${String(pIndex(p.h) + 1).padStart(2, "0")}-${1} / batch volgens label</dd>
+            <dt>Waarschuwingen</dt><dd>${esc(p.w)}</dd></dl>
+            <p class="muted" style="font-size:.85rem">Een veiligheidsprobleem met dit product? Meld het via info@hyggehond.nl.</p></div></details>
+        </div>
+      </div>
+    </div>
+    <section style="padding-bottom:3rem"><h2 style="margin-bottom:1.2rem">Past mooi bij</h2><div class="grid">${[...xs, ...extra].map(card).join("")}</div></section>
+    <section style="padding-bottom:3.5rem"><h2>Reviews</h2>
+      <div class="empty-reviews" style="margin-top:1rem"><strong>Nog geen reviews voor dit product</strong>
+      <p class="muted">Reviews kunnen alleen worden geplaatst door klanten die dit product bij ons hebben gekocht. Ze worden automatisch uitgenodigd na levering. We plaatsen alle reviews, ook de kritische.</p></div></section>
+  </div>`;
+}
+let stickyObs = null;
+function bindProduct(h) {
+  const p = byH[h];
+  const st = document.getElementById("stickyAtc");
+  const upd = () => {
+    document.getElementById("pPrice").innerHTML = `${eur(p.v[curVar].p)}<small>incl. btw</small>`;
+    const sl = document.getElementById("sizeLabel"); if (sl) sl.innerHTML = `Maat: <strong>${esc(p.v[curVar].n)}</strong>`;
+    st.innerHTML = `<div style="display:grid;line-height:1.3;min-width:0"><span style="font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.t)}</span><strong style="font-variant-numeric:tabular-nums">${eur(p.v[curVar].p)}</strong></div><button class="btn" id="stickyBtn">In winkelwagen</button>`;
+    document.getElementById("stickyBtn").onclick = () => addToCart(h, curVar);
+  };
+  main.querySelectorAll(".size").forEach(b => b.onclick = () => { curVar = +b.dataset.v; main.querySelectorAll(".size").forEach(x => x.setAttribute("aria-pressed", String(x === b))); upd(); });
+  document.getElementById("atc").onclick = () => addToCart(h, curVar);
+  upd();
+  if ("IntersectionObserver" in window) {
+    stickyObs = new IntersectionObserver(e => { st.hidden = e[0].isIntersecting || e[0].boundingClientRect.top > 0; });
+    stickyObs.observe(document.getElementById("atc"));
+  }
+}
+
+const PAGES = {
+  "over-ons": () => `<h1>Hygge, maar dan voor je hond</h1>
+    <p>Hygge is het Deense woord voor dat gevoel van rust, warmte en gezelligheid. Op de bank met een plaid, regen tegen het raam. Honden snappen dat beter dan wie ook.</p>
+    <p>Hyggehond is begonnen door Dylan en [NAAM HOND], een [LEEFTIJD] jaar oude [RAS]. Toen we een nieuwe mand zochten, vonden we vooral twee soorten: goedkoop en snel kapot, of mooi maar onbetaalbaar en met weken levertijd. Daar zat weinig tussen.</p>
+    <p>Dus besloten we het zelf te doen. We kiezen een klein assortiment rustige, mooie basics voor in huis en onderweg. Alles wat we verkopen, heeft [NAAM HOND] eerst getest.</p>
+    <h2>Onze beloftes</h2>
+    <ol><li><strong>Eerst getest, dan verkocht.</strong> We bestellen samples, gebruiken ze thuis en op pad, en kijken naar naden, materialen en geur.</li>
+    <li><strong>Snel en dichtbij.</strong> Onze Europese partners leveren vanuit een magazijn in de EU, binnen 2–5 werkdagen en zonder verrassingen bij de douane.</li>
+    <li><strong>Eerlijk.</strong> Echte foto's, echte reviews en duidelijke prijzen. Geen nep-afteltimers of verzonnen kortingen.</li></ol>
+    <h2>Hoe we werken</h2>
+    <p>We hebben zelf geen magazijn. Je bestelling wordt rechtstreeks verstuurd door onze Europese partners. Wij selecteren de producten, controleren de kwaliteit en zijn je aanspreekpunt voor alles.</p>
+    <p class="muted">Hyggehond is een handelsnaam van Dylan Smit Holding B.V. · KvK [KVK]</p>`,
+  "faq": () => {
+    const G = [["Bestellen & betalen", [["Hoe kan ik betalen?", "Met iDEAL | Wero, Bancontact, creditcard, Apple Pay, Google Pay of achteraf met Klarna."], ["Heb ik een account nodig?", "Nee, je kunt als gast bestellen."], ["Zijn de prijzen inclusief btw?", "Ja, alle prijzen zijn inclusief 21% btw. Verzendkosten zie je in je winkelwagen, voordat je afrekent."], ["Kan ik mijn bestelling nog wijzigen?", "Mail ons binnen 2 uur na je bestelling. Daarna is je bestelling meestal al doorgestuurd naar het magazijn."]]],
+      ["Verzending", [["Hoe lang duurt de levering?", "2–5 werkdagen in Nederland en België. Op elke productpagina staat de verwachte leverdatum."], ["Wat kost verzending?", "Gratis vanaf € 50, anders € 4,95."], ["Waarom komt mijn bestelling in meerdere pakketten?", "Onze producten liggen bij verschillende Europese partners. Je ontvangt per pakket een trackinglink, zonder extra kosten."], ["Versturen jullie vanuit China?", "Nee. Al onze partners leveren vanuit een magazijn binnen de EU. Je betaalt dus nooit douanekosten."]]],
+      ["Retour & herroepen", [["Hoeveel bedenktijd heb ik?", "30 dagen na ontvangst."], ["Hoe stuur ik iets terug?", "Meld je retour aan via Overeenkomst herroepen. Je krijgt binnen 1 werkdag het retouradres."], ["Wie betaalt het terugsturen?", "Jij, tenzij het product defect is of we iets verkeerds hebben geleverd. Dan betalen wij alles."], ["Wanneer krijg ik mijn geld terug?", "Uiterlijk 14 dagen na je herroeping. Meestal binnen 5 werkdagen nadat we het product terug hebben."]]],
+      ["Producten & maten", [["Hoe weet ik welke maat ik nodig heb?", "Bekijk de maatgids. Twijfel je, mail ons de maten en het ras van je hond, dan adviseren we je."], ["Zijn de producten veilig?", "We vragen bij elke leverancier de productveiligheidsgegevens op en tonen ze op de productpagina. Laat je hond nooit onbeheerd met speelgoed, tuig of halsband."]]]];
+    return `<h1>Veelgestelde vragen</h1>` + G.map(([t, qs]) => `<h2>${esc(t)}</h2><div class="faq-group">${qs.map(([q, a]) => `<details class="acc"><summary>${esc(q)}</summary><div class="in"><p>${esc(a)}</p></div></details>`).join("")}</div>`).join("");
+  },
+  "contact": () => `<h1>Contact</h1><p>Vraag over je bestelling, maatadvies of iets anders? We reageren op werkdagen binnen 1 werkdag.</p>
+    <form class="form" data-demo="Dank je wel. We hebben je bericht ontvangen en reageren binnen 1 werkdag.">
+      <label>Naam<input id="cName" autocomplete="name" required></label>
+      <label>E-mail<input id="cMail" type="email" autocomplete="email" required></label>
+      <label>Ordernummer (optioneel)<input id="cOrder" placeholder="#HH1001"></label>
+      <label>Je vraag<textarea id="cMsg" required></textarea></label>
+      <button class="btn">Versturen</button></form>
+    <p><strong>E-mail:</strong> <span style="user-select:all">info@hyggehond.nl</span></p>
+    <p class="muted">Dylan Smit Holding B.V., h.o.d.n. Hyggehond · [ADRES] · KvK [KVK] · Btw [BTW]<br>Retourneren? Stuur niets naar dit adres. Meld je retour eerst <a href="#herroepen">hier</a> aan.</p>`,
+  "track-trace": () => `<h1>Waar is mijn bestelling?</h1><p>Vul je ordernummer en e-mailadres in. Je ziet dan de status van elk pakket.</p>
+    <form class="form" data-track>
+      <label>Ordernummer<input id="tOrder" placeholder="#HH1001" required></label>
+      <label>E-mailadres<input id="tMail" type="email" required></label>
+      <button class="btn">Bekijk status</button></form>
+    <div id="trackOut"></div>`,
+  "maatgids": () => `<h1>Meet je hond in 2 minuten</h1><p>Je hebt een zacht meetlint nodig (of een touwtje en een rolmaat) en een paar snoepjes.</p>
+    <div class="tw"><table><thead><tr><th>Product</th><th>Wat meet je?</th><th>Hoe?</th></tr></thead><tbody>
+      <tr><td>Mand / kussen</td><td>Lengte</td><td>Laat je hond liggen zoals hij graag slaapt. Meet van neus tot staartaanzet en tel er <strong>15–20 cm</strong> bij op.</td></tr>
+      <tr><td>Donutmand</td><td>Lengte opgerold</td><td>Meet opgerold van neus tot staartaanzet en kies een diameter die <strong>10–15 cm</strong> groter is.</td></tr>
+      <tr><td>Tuig</td><td>Borst- en nekomvang</td><td>Borst: rondom het breedste deel, net achter de voorpoten. Nek: waar een halsband zou zitten.</td></tr>
+      <tr><td>Halsband</td><td>Nekomvang</td><td>Meet en tel er 2 vingers ruimte bij op.</td></tr>
+      <tr><td>Regenjas / badjas</td><td>Ruglengte</td><td>Van nekaanzet tot staartaanzet.</td></tr></tbody></table></div>
+    <h2>Reken je mandmaat uit</h2>
+    <form class="form" id="sizeCalc" novalidate><div class="two">
+      <label>Lengte liggend (cm)<input id="scLen" type="number" inputmode="numeric" min="20" max="160" value="75"></label>
+      <label>Slaapt je hond…<select id="scType"><option value="flat">languit</option><option value="donut">opgerold</option></select></label></div></form>
+    <p class="ok-msg" id="scOut" role="status"></p>
+    <p><strong>Tussen twee maten?</strong> Kies bij manden de grotere maat. Kies bij tuigen de grotere maat en stel hem strakker af.</p>`,
+  "herroepen": () => `<h1>Overeenkomst herroepen</h1><p>Wil je je bestelling (of een deel ervan) terugsturen? Vul het formulier in. Je ontvangt direct een ontvangstbevestiging per e-mail en binnen 1 werkdag het retouradres.</p>
+    <form class="form" data-herroep>
+      <label>Naam<input id="hName" autocomplete="name" required></label>
+      <label>E-mailadres<input id="hMail" type="email" autocomplete="email" required></label>
+      <label>Ordernummer<input id="hOrder" placeholder="#HH1001" required></label>
+      <label>Welke producten? (leeg = hele bestelling)<textarea id="hProd"></textarea></label>
+      <label>Reden (optioneel)<input id="hReason"></label>
+      <button class="btn">Herroeping bevestigen</button></form>
+    <div id="herroepOut"></div>`,
+  "verzending": () => `<p class="concept">Concepttekst. De volledige versie staat in webshop/05-teksten/juridisch/verzendbeleid.md.</p><h1>Verzendbeleid</h1>
+    <div class="tw"><table><thead><tr><th>Bestelwaarde (incl. btw)</th><th>Verzendkosten</th></tr></thead><tbody><tr><td>Vanaf € 50</td><td><strong>Gratis</strong></td></tr><tr><td>Onder € 50</td><td>€ 4,95</td></tr></tbody></table></div>
+    <p>We leveren in Nederland en België. Je bestelling wordt meestal binnen 1 werkdag verwerkt en daarna binnen <strong>2–5 werkdagen</strong> bezorgd, vanuit magazijnen van onze Europese partners met PostNL, DHL, DPD of GLS.</p>
+    <h2>Meerdere pakketten</h2><p>Bestel je producten uit verschillende categorieën, dan kan je bestelling in meer dan één pakket komen. Je krijgt per pakket een e-mail met een trackinglink. Dit kost je niets extra.</p>`,
+  "retour": () => `<p class="concept">Concepttekst. De volledige versie staat in webshop/05-teksten/juridisch/retourbeleid.md.</p><h1>Retourbeleid</h1>
+    <p>Je hebt bij ons <strong>30 dagen bedenktijd</strong>, vanaf de dag dat je je bestelling hebt ontvangen. Dat is langer dan de wettelijke 14 dagen.</p>
+    <h2>Zo retourneer je</h2><ol><li>Meld je retour aan via <a href="#herroepen">Overeenkomst herroepen</a>.</li><li>Je ontvangt binnen 1 werkdag het retouradres in NL of de EU.</li><li>Stuur het product binnen 14 dagen na je aanmelding terug en bewaar je verzendbewijs.</li></ol>
+    <h2>Kosten</h2><p>De kosten van het terugsturen zijn voor jou. Is het product defect of hebben we iets verkeerds geleverd? Dan betalen wij alles.</p>
+    <h2>Terugbetaling</h2><p>Binnen 14 dagen na je herroeping, via de betaalmethode die je gebruikte. Meestal binnen 5 werkdagen na ontvangst.</p>`,
+  "herroepingsrecht": () => `<p class="concept">Concepttekst. De volledige versie met modelformulier staat in webshop/05-teksten/juridisch/herroepingsrecht.md.</p><h1>Herroepingsrecht</h1>
+    <p>Je hebt het recht om binnen 14 dagen zonder opgave van redenen de overeenkomst te herroepen. Hyggehond verlengt deze termijn vrijwillig naar <strong>30 dagen</strong>.</p>
+    <p>Herroepen kan online via <a href="#herroepen">Overeenkomst hier herroepen</a>, per e-mail naar info@hyggehond.nl of per post.</p>
+    <h2>Modelformulier voor herroeping</h2>
+    <p>Aan: Dylan Smit Holding B.V., h.o.d.n. Hyggehond, [ADRES], info@hyggehond.nl</p>
+    <p>Ik/Wij (*) deel/delen (*) u hierbij mede dat ik/wij (*) onze overeenkomst betreffende de verkoop van de volgende producten herroep/herroepen (*): …</p>
+    <p>Besteld op (*) / ontvangen op (*): … · Ordernummer: … · Naam/Namen consument(en): … · Adres consument(en): … · Handtekening (alleen op papier): … · Datum: …</p>
+    <p class="muted">(*) Doorhalen wat niet van toepassing is.</p>`,
+  "voorwaarden": () => `<p class="concept">Concept, wordt juridisch nagekeken. De volledige tekst (14 artikelen) staat in webshop/05-teksten/juridisch/algemene-voorwaarden.md.</p><h1>Algemene voorwaarden</h1>
+    <ul><li>Art. 1–3: definities, identiteit, toepasselijkheid</li><li>Art. 4–6: aanbod, overeenkomst, prijzen (incl. btw; laagste prijs van 30 dagen bij korting)</li><li>Art. 7: herroepingsrecht, 30 dagen bedenktijd, herroepingsfunctie</li><li>Art. 8–9: levering (2–5 werkdagen, max. 30 dagen) en betaling</li><li>Art. 10–12: conformiteit, klachten, aansprakelijkheid</li><li>Art. 13–14: persoonsgegevens en toepasselijk recht</li></ul>`,
+  "privacy": () => `<p class="concept">Concept, wordt juridisch nagekeken. De volledige tekst staat in webshop/05-teksten/juridisch/privacyverklaring.md.</p><h1>Privacyverklaring</h1>
+    <p>Hyggehond (Dylan Smit Holding B.V.) verwerkt je gegevens om je bestelling uit te voeren, voor klantenservice en, alleen met je toestemming, voor de nieuwsbrief, analyse en advertenties. We verkopen je gegevens nooit. Je hebt recht op inzage, correctie, verwijdering en bezwaar via privacy@hyggehond.nl.</p>`,
+  "cookies": () => `<p class="concept">Concept. De volledige tekst staat in webshop/05-teksten/juridisch/cookieverklaring.md.</p><h1>Cookieverklaring</h1>
+    <p>Alleen noodzakelijke cookies plaatsen we zonder toestemming. Voor analyse- en marketingcookies vragen we eerst je toestemming. Weigeren is net zo makkelijk als accepteren.</p>
+    <div class="tw"><table><thead><tr><th>Categorie</th><th>Waarvoor</th><th>Toestemming?</th></tr></thead><tbody>
+    <tr><td>Noodzakelijk</td><td>Winkelwagen, afrekenen, beveiliging</td><td>Nee</td></tr><tr><td>Analyse</td><td>Google Analytics 4</td><td>Ja</td></tr><tr><td>Marketing</td><td>Meta, TikTok, Google Ads</td><td>Ja</td></tr></tbody></table></div>`,
+  "bedrijfsgegevens": () => `<h1>Bedrijfsgegevens</h1><p>Hyggehond is een handelsnaam van:</p>
+    <p><strong>Dylan Smit Holding B.V.</strong><br>[ADRES]<br>E-mail: info@hyggehond.nl<br>KvK-nummer: [KVK]<br>Btw-identificatienummer: [BTW]</p>
+    <p class="muted">Bezoek alleen op afspraak; we hebben geen winkel of afhaalpunt.</p>`
+};
+const PAGE_TITLES = { "over-ons": "Over ons", "faq": "Veelgestelde vragen", "contact": "Contact", "track-trace": "Bestelling volgen", "maatgids": "Maatgids", "herroepen": "Overeenkomst herroepen", "verzending": "Verzending", "retour": "Retourneren", "herroepingsrecht": "Herroepingsrecht", "voorwaarden": "Algemene voorwaarden", "privacy": "Privacyverklaring", "cookies": "Cookieverklaring", "bedrijfsgegevens": "Bedrijfsgegevens" };
+function viewPage(k) {
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>${esc(PAGE_TITLES[k])}</span></nav><div class="prose">${PAGES[k]()}</div></div>`;
+}
+function bindPage(k) {
+  const demo = main.querySelector("form[data-demo]");
+  if (demo) demo.onsubmit = e => { e.preventDefault(); if (!demo.reportValidity()) return; demo.outerHTML = `<p class="ok-msg" role="status">${esc(demo.dataset.demo)} <span class="muted">(Preview: er is niets verstuurd.)</span></p>`; };
+  const tr = main.querySelector("form[data-track]");
+  if (tr) tr.onsubmit = e => { e.preventDefault(); if (!tr.reportValidity()) return;
+    document.getElementById("trackOut").innerHTML = `<div class="ok-msg" role="status" style="display:grid;gap:.6rem"><strong>Voorbeeld: bestelling ${esc(document.getElementById("tOrder").value)}, 2 pakketten</strong>
+      <p>Pakket 1 van 2 · <strong>Verzonden</strong> · PostNL · verwacht ${deliveryText()}</p><p>Pakket 2 van 2 · <strong>Ontvangen</strong> · wordt klaargemaakt in het magazijn</p>
+      <p class="muted">Preview met voorbeelddata. In de echte winkel komt hier de status uit Parcel Panel.</p></div>`; };
+  const hr = main.querySelector("form[data-herroep]");
+  if (hr) hr.onsubmit = e => { e.preventDefault(); if (!hr.reportValidity()) return;
+    const t = new Date().toLocaleString("nl-NL", { dateStyle: "long", timeStyle: "short" });
+    document.getElementById("herroepOut").innerHTML = `<div class="ok-msg" role="status"><strong>Herroeping ontvangen op ${t}.</strong> Daarmee ben je op tijd. Binnen 1 werkdag sturen we je het retouradres. <span class="muted">(Preview: er is geen e-mail verstuurd.)</span></div>`;
+    hr.hidden = true; };
+  if (k === "maatgids") {
+    const calc = () => { const l = +document.getElementById("scLen").value || 0, t = document.getElementById("scType").value;
+      const out = document.getElementById("scOut");
+      if (l < 20) { out.textContent = "Vul de lengte van je hond in centimeters in."; return; }
+      if (t === "flat") { const min = l + 15, ms = [["S", 70], ["M", 90], ["L", 110]].find(([, m]) => m >= min);
+        out.innerHTML = `Minimale binnenlengte: <strong>${min}–${l + 20} cm</strong>. ${ms ? `Advies: <a href="#p-orthopedische-hondenmand-rust">mand Rust maat ${ms[0]}</a> (${ms[1]} cm).` : "Groter dan ons grootste formaat (110 cm); mail ons voor advies."}`; }
+      else { const min = l + 10, ms = [["S", 50], ["M", 70], ["L", 90]].find(([, m]) => m >= min);
+        out.innerHTML = `Minimale diameter: <strong>${min}–${l + 15} cm</strong>. ${ms ? `Advies: <a href="#p-donutmand-nest">Donutmand Nest maat ${ms[0]}</a> (Ø ${ms[1]} cm).` : "Groter dan onze grootste donut (Ø 90 cm); kies een rechthoekige mand."}`; } };
+    document.getElementById("scLen").oninput = calc; document.getElementById("scType").onchange = calc; calc();
+  }
+}
+function viewJournal() {
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>Journal</span></nav>
+    <div class="col-head"><h1>Journal</h1><p>Praktische tips voor een ontspannen hond, in huis en op pad.</p></div>
+    <div class="posts" style="padding-bottom:3rem">${BLOGS.map((b, i) => `<a class="post" href="#b-${b.slug}"><div class="ph" style="background:color-mix(in oklab, var(--sand) ${30 + i * 8}%, var(--bg))">${svg(["bed", "gift", "leash", "ball", "truck"][i])}</div><h2 style="font-size:1.3rem">${esc(b.t)}</h2><p class="muted">${esc(b.d)}</p></a>`).join("")}</div></div>`;
+}
+function viewArticle(slug) {
+  const b = BLOGS.find(x => x.slug === slug); if (!b) return null;
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><a href="#journal">Journal</a></nav>
+    <article class="prose"><h1>${esc(b.t)}</h1>${b.html}</article></div>`;
+}
+function viewCheckout() {
+  if (!cart.length) return `<div class="wrap prose" style="padding-top:2rem"><h1>Afrekenen</h1><p>Je winkelwagen is leeg.</p><p><a class="btn ghost" href="#c-all">Bekijk alle producten</a></p></div>`;
+  const st = subtotal(), sc = shipCost(st), pc = parcels();
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>Afrekenen</span></nav>
+    <p class="concept" style="margin-bottom:1.5rem">Preview van de Shopify-checkout. Er wordt niets besteld of betaald, en je gegevens worden niet opgeslagen of verstuurd.</p>
+    <form class="co" id="coForm" novalidate>
+      <div style="display:grid;gap:2rem;min-width:0">
+        <fieldset><legend>Contact</legend>
+          <label>E-mailadres<input id="coMail" type="email" autocomplete="email" required></label>
+          <label class="check"><input type="checkbox" id="coNews"> Stuur me tips en aanbiedingen (optioneel)</label></fieldset>
+        <fieldset><legend>Bezorging</legend>
+          <label>Land<select id="coCountry"><option>Nederland</option><option>België</option></select></label>
+          <div class="two"><label>Voornaam<input id="coFirst" autocomplete="given-name" required></label><label>Achternaam<input id="coLast" autocomplete="family-name" required></label></div>
+          <div class="two"><label>Postcode<input id="coZip" autocomplete="postal-code" required></label><label>Huisnummer<input id="coNr" required></label></div>
+          <label>Straat en plaats<input id="coStreet" autocomplete="street-address" required></label>
+          <label>Telefoon (voor de bezorger, optioneel)<input id="coTel" type="tel" autocomplete="tel"></label></fieldset>
+        <fieldset><legend>Verzending</legend>
+          <div class="paym"><label><input type="radio" name="ship" checked> <span style="flex:1">Standaard · 2–5 werkdagen${pc > 1 ? ` · ${pc} pakketten` : ""}</span><strong>${sc ? eur(sc) : "Gratis"}</strong></label></div></fieldset>
+        <fieldset><legend>Betaling</legend>
+          <div class="paym">${["iDEAL | Wero", "Bancontact", "Creditcard", "Apple Pay", "Google Pay", "Klarna – achteraf betalen"].map((m, i) => `<label><input type="radio" name="pay" value="${esc(m)}"${i === 0 ? " checked" : ""}> ${esc(m)}</label>`).join("")}</div>
+          <p class="muted" style="font-size:.85rem">Je rondt de betaling af in de beveiligde omgeving van je bank of betaalprovider.</p></fieldset>
+        <p style="font-size:.88rem" class="muted">Door te bestellen ga je akkoord met onze <a href="#voorwaarden">algemene voorwaarden</a>. Je hebt 30 dagen bedenktijd; lees ons <a href="#herroepingsrecht">herroepingsrecht</a>.</p>
+        <button class="btn full">Nu betalen</button>
+      </div>
+      <aside class="summary" aria-label="Overzicht bestelling"><h2 style="font-size:1.25rem">Je bestelling</h2>
+        ${cart.map(i => { const p = byH[i.h], v = p.v[i.v]; return `<div class="line" style="grid-template-columns:56px 1fr auto">${ph(p)}<div><span style="font-weight:500">${esc(p.t)}</span><div class="muted" style="font-size:.85rem">${esc(v.n)} · ${i.q}×</div></div><span style="font-variant-numeric:tabular-nums">${eur(v.p * i.q)}</span></div>`; }).join("")}
+        <div class="sum"><span>Subtotaal</span><span>${eur(st)}</span></div><div class="sum"><span>Verzending</span><span>${sc ? eur(sc) : "Gratis"}</span></div>
+        <div class="sum total"><span>Totaal</span><span>${eur(st + sc)}</span></div>
+        <p class="muted" style="font-size:.85rem">Inclusief ${eur((st + sc) - (st + sc) / 1.21)} btw (21%)</p></aside>
+    </form></div>`;
+}
+function bindCheckout() {
+  const f = document.getElementById("coForm"); if (!f) return;
+  f.onsubmit = e => { e.preventDefault(); if (!f.reportValidity()) return;
+    const pc = parcels(), m = f.querySelector('input[name="pay"]:checked').value;
+    main.innerHTML = `<div class="wrap prose" style="padding-top:2rem"><span class="eyebrow">Bestelling #HH1001 (voorbeeld)</span><h1>Dank je wel, ${esc(document.getElementById("coFirst").value)}</h1>
+      <p class="concept">Preview: er is niets besteld of betaald, en de betaling via ${esc(m)} is niet uitgevoerd. In de echte winkel stuur je hier door naar de betaalomgeving.</p>
+      <p>Je ontvangt een orderbevestiging per e-mail met je factuur, de algemene voorwaarden en het modelformulier voor herroeping.</p>
+      <p>Verwachte levering: <strong>${deliveryText()}</strong>${pc > 1 ? `, in ${pc} pakketten. Je ontvangt per pakket een trackinglink.` : "."}</p>
+      <p>Toch van gedachten veranderd? Gebruik <a href="#herroepen">Overeenkomst herroepen</a>.</p>
+      <p><a class="btn ghost" href="#home">Verder winkelen</a></p></div>`;
+    cart = []; save(); renderCart(); main.focus(); };
+}
+
+/* router */
+function route() {
+  if (stickyObs) { stickyObs.disconnect(); stickyObs = null; }
+  document.getElementById("stickyAtc").hidden = true;
+  mnav.hidden = true; menuBtn.setAttribute("aria-expanded", "false");
+  const k = decodeURIComponent(location.hash.slice(1)) || "home";
+  let html = null, after = null, navKey = k;
+  if (k === "home" || k === "main") html = viewHome();
+  else if (k.startsWith("c-")) { html = viewCollection(k.slice(2)); after = () => bindCollection(k.slice(2)); }
+  else if (k.startsWith("p-")) { html = viewProduct(k.slice(2)); after = () => bindProduct(k.slice(2));
+    const p = byH[k.slice(2)]; if (p) { const s = colByName[p.c].slug; navKey = s === "eten-drinken" || s === "spelen-verrijking" ? "c-eten-spelen" : "c-" + s; } }
+  else if (k === "journal") html = viewJournal();
+  else if (k.startsWith("b-")) { html = viewArticle(k.slice(2)); navKey = "journal"; }
+  else if (k === "checkout") { html = viewCheckout(); after = bindCheckout; }
+  else if (PAGES[k]) { html = viewPage(k); after = () => bindPage(k); }
+  if (html === null) html = `<div class="wrap prose" style="padding-top:2rem"><h1>Pagina niet gevonden</h1><p>Deze pagina bestaat niet (meer). <a href="#home">Terug naar home</a></p></div>`;
+  if (k === "main") return;
+  main.innerHTML = html;
+  document.getElementById("mainNav").innerHTML = navHtml(navKey);
+  document.getElementById("mobileNavInner").innerHTML = navHtml(navKey) + `<a href="#faq">Klantenservice</a><a href="#over-ons">Over ons</a>`;
+  if (after) after();
+  const nl = document.getElementById("nlForm");
+  if (nl) nl.onsubmit = e => { e.preventDefault(); if (!nl.reportValidity()) return; nl.hidden = true; document.getElementById("nlOk").hidden = false; };
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+document.addEventListener("click", e => { const a = e.target.closest('a[href^="#"]'); if (a && a.getAttribute("href") === location.hash) route(); });
+renderCart(); route();
+</script>

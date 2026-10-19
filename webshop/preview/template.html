@@ -1,0 +1,784 @@
+<title>Hyggehond Preview</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: één kolom mobiel, max 1200px desktop; huisstijl uit webshop/04-sitemap-wireframes.md */
+:root {
+  --bg: #FAF7F2; --surface: #FFFFFF; --fg: #2B2A28; --muted: #6B665D; --line: #E4DCCE;
+  --accent: #5E6B4E; --accent-soft: #E8EBE0; --sand: #D9CBB4; --btn: #2B2A28; --btn-fg: #FFFFFF;
+  --note: #F3EBDC; --ok: #4E6B45;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --radius: 4px; --wrap: 1200px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1B1A18; --surface: #24231F; --fg: #F0EBE2; --muted: #ABA498; --line: #3A3732;
+  --accent: #AEBC97; --accent-soft: #2D3228; --sand: #5B5345; --btn: #F0EBE2; --btn-fg: #1B1A18;
+  --note: #2E2A22; --ok: #A9C49C; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1B1A18; --surface: #24231F; --fg: #F0EBE2; --muted: #ABA498; --line: #3A3732;
+  --accent: #AEBC97; --accent-soft: #2D3228; --sand: #5B5345; --btn: #F0EBE2; --btn-fg: #1B1A18;
+  --note: #2E2A22; --ok: #A9C49C; color-scheme: dark }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); }
+h3 { font-size: 1.15rem; }
+p { margin: 0; }
+.wrap { max-width: var(--wrap); margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.muted { color: var(--muted); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.skip { position: absolute; left: -999px; } .skip:focus { left: 16px; top: 8px; z-index: 50; background: var(--surface); padding: 8px 12px; }
+
+/* knoppen */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; padding: 0 1.4rem; border-radius: var(--radius);
+  border: 1px solid var(--btn); background: var(--btn); color: var(--btn-fg); font: 500 1rem var(--body); cursor: pointer; text-decoration: none; }
+.btn.ghost { background: transparent; color: var(--fg); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.btn.full { width: 100%; }
+.linkbtn { background: none; border: 0; padding: 0; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* preview-band + usp */
+.preview { background: var(--note); font-size: .85rem; }
+.preview .wrap { padding-block: .5rem; display: flex; gap: .5rem 1rem; flex-wrap: wrap; justify-content: space-between; }
+.usp { background: var(--accent); color: var(--bg); font-size: .85rem; text-align: center; }
+.usp .wrap { padding-block: .45rem; }
+.usp .long { display: none; }
+@media (min-width: 700px) { .usp .long { display: inline; } .usp .short { display: none; } }
+
+/* header */
+header.site { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+header.site .wrap { display: flex; align-items: center; gap: 1rem; min-height: 64px; }
+.logo { display: flex; align-items: center; gap: .5rem; font-family: var(--display); font-size: 1.45rem; font-weight: 600; text-decoration: none; letter-spacing: .01em; }
+.logo svg { width: 26px; height: 26px; color: var(--accent); }
+nav.main { display: none; gap: 1.4rem; margin-left: 1.5rem; font-size: .95rem; }
+nav.main a { text-decoration: none; padding: .5rem 0; border-bottom: 2px solid transparent; }
+nav.main a[aria-current="page"], nav.main a:hover { border-color: var(--accent); }
+.hdr-actions { margin-left: auto; display: flex; align-items: center; gap: .25rem; }
+.iconbtn { width: 44px; height: 44px; display: inline-grid; place-items: center; border: 0; background: none; color: var(--fg); cursor: pointer; position: relative; border-radius: var(--radius); }
+.iconbtn svg { width: 22px; height: 22px; }
+.badge { position: absolute; top: 5px; right: 3px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--accent); color: var(--bg); font-size: .7rem; font-weight: 600; display: grid; place-items: center; padding: 0 4px; }
+.menu-toggle { display: inline-grid; }
+@media (min-width: 900px) { nav.main { display: flex; } .menu-toggle { display: none; } }
+.mobile-nav { border-top: 1px solid var(--line); }
+.mobile-nav .wrap { display: grid; padding-block: .5rem 1rem; }
+.mobile-nav a { padding: .7rem 0; text-decoration: none; border-bottom: 1px solid var(--line); font-size: 1.05rem; }
+
+main { min-height: 60vh; }
+section.block { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+section.block.tint { background: var(--surface); border-block: 1px solid var(--line); }
+.sec-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+/* hero */
+.hero .wrap { display: grid; gap: 2rem; padding-block: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (min-width: 860px) { .hero .wrap { grid-template-columns: 1fr 1.05fr; } }
+.hero p.lead { font-size: 1.15rem; color: var(--muted); max-width: 34ch; margin-top: 1rem; }
+.hero .ctas { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.6rem; }
+.hero-art { aspect-ratio: 5/4; max-width: 100%; border-radius: var(--radius); background: color-mix(in oklab, var(--sand) 55%, var(--bg)); position: relative; overflow: hidden; }
+.hero-art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-art figcaption { position: absolute; left: 12px; bottom: 10px; font-size: .75rem; color: var(--muted); background: var(--bg); padding: 2px 8px; border-radius: var(--radius); }
+
+.promises { display: grid; gap: 1.5rem; }
+@media (min-width: 760px) { .promises { grid-template-columns: repeat(3, 1fr); } }
+.promise { display: grid; gap: .4rem; }
+.promise svg { width: 28px; height: 28px; color: var(--accent); }
+
+/* tegels categorie */
+.cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (min-width: 860px) { .cats { grid-template-columns: repeat(4, 1fr); } }
+.cat { display: grid; gap: .6rem; text-decoration: none; }
+.cat .ph { aspect-ratio: 1; }
+.cat span { font-family: var(--display); font-size: 1.1rem; }
+
+/* productkaarten */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; }
+@media (min-width: 860px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.card { display: grid; gap: .5rem; text-decoration: none; align-content: start; }
+.card h3 { font-family: var(--body); font-weight: 500; font-size: .98rem; }
+.card .price { font-variant-numeric: tabular-nums; }
+.ph { border-radius: var(--radius); display: grid; place-items: center; position: relative; overflow: hidden; color: var(--accent); max-width: 100%; }
+.ph svg { width: 42%; height: 42%; }
+.ph .tag { position: absolute; left: 8px; top: 8px; font-size: .7rem; background: var(--bg); color: var(--muted); padding: 1px 7px; border-radius: var(--radius); }
+.card .ph { aspect-ratio: 1; transition: transform .25s ease; }
+.card:hover .ph { transform: scale(1.015); }
+@media (prefers-reduced-motion: reduce) { .card:hover .ph { transform: none; } * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* story */
+.story { display: grid; gap: 2rem; align-items: center; }
+@media (min-width: 860px) { .story { grid-template-columns: .9fr 1.1fr; } }
+.story .ph { aspect-ratio: 4/3; }
+.story p { max-width: 58ch; margin-top: .8rem; }
+
+.empty-reviews { border: 1px dashed var(--line); border-radius: var(--radius); padding: 1.5rem; display: grid; gap: .4rem; }
+
+.newsletter { display: grid; gap: 1rem; align-items: center; }
+@media (min-width: 860px) { .newsletter { grid-template-columns: 1.1fr 1fr; } }
+.nl-form { display: flex; gap: .5rem; flex-wrap: wrap; }
+.nl-form input { flex: 1 1 220px; }
+input, textarea, select { min-height: 44px; padding: .55rem .75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--fg); font: 1rem var(--body); width: 100%; }
+textarea { min-height: 110px; resize: vertical; }
+label { font-size: .9rem; font-weight: 500; display: grid; gap: .3rem; }
+.form { display: grid; gap: 1rem; max-width: 560px; }
+.ok-msg { background: var(--accent-soft); border-radius: var(--radius); padding: 1rem; }
+
+/* breadcrumb */
+.crumbs { font-size: .85rem; color: var(--muted); padding-block: 1rem; display: flex; gap: .4rem; flex-wrap: wrap; }
+.crumbs a { text-decoration: none; } .crumbs a:hover { text-decoration: underline; }
+
+/* collectie */
+.col-head { display: grid; gap: .6rem; padding-bottom: 1.5rem; }
+.col-head p { max-width: 62ch; color: var(--muted); }
+.toolbar { display: flex; gap: .75rem; justify-content: space-between; align-items: center; flex-wrap: wrap; padding-block: 1rem; border-block: 1px solid var(--line); margin-bottom: 1.5rem; font-size: .9rem; }
+.toolbar select { width: auto; min-height: 40px; }
+.chips { display: flex; gap: .5rem; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: .35rem .9rem; font: .88rem var(--body); color: var(--fg); cursor: pointer; min-height: 36px; }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+/* product */
+.pdp { display: grid; gap: 2rem; padding-bottom: 3rem; }
+@media (min-width: 900px) { .pdp { grid-template-columns: 1.1fr 1fr; gap: 3rem; } }
+.gallery { display: grid; gap: .6rem; align-content: start; min-width: 0; }
+.gallery .ph.main { aspect-ratio: 1; }
+.thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+.thumbs .ph { aspect-ratio: 1; }
+.thumbs .ph svg { width: 36%; height: 36%; }
+.buy { display: grid; gap: 1.1rem; align-content: start; min-width: 0; }
+.pprice { font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.pprice small { font-size: .85rem; color: var(--muted); margin-left: .4rem; }
+.ship-note { font-size: .88rem; color: var(--muted); }
+.sizes { display: flex; gap: .5rem; flex-wrap: wrap; }
+.size { min-height: 44px; padding: .4rem .9rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--fg); font: .92rem var(--body); cursor: pointer; }
+.size[aria-pressed="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.stock { display: flex; gap: .5rem; align-items: baseline; font-size: .95rem; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); flex: none; transform: translateY(-1px); }
+.paylogos { display: flex; flex-wrap: wrap; gap: .4rem; }
+.paylogos span { font-size: .72rem; border: 1px solid var(--line); border-radius: 3px; padding: 2px 7px; color: var(--muted); background: var(--surface); }
+details.acc { border-top: 1px solid var(--line); }
+details.acc:last-of-type { border-bottom: 1px solid var(--line); }
+details.acc summary { cursor: pointer; padding: 1rem 0; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+details.acc summary::after { content: "+"; font-family: var(--display); font-size: 1.3rem; line-height: 1; }
+details.acc[open] summary::after { content: "−"; }
+details.acc .in { padding-bottom: 1.1rem; display: grid; gap: .6rem; font-size: .95rem; }
+details.acc ul { margin: 0; padding-left: 1.2rem; }
+dl.gpsr { margin: 0; display: grid; gap: .5rem; }
+dl.gpsr dt { font-weight: 600; font-size: .85rem; }
+dl.gpsr dd { margin: 0; }
+.ph-note { font-size: .8rem; color: var(--muted); }
+
+.sticky-atc { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--bg); border-top: 1px solid var(--line);
+  padding: .7rem max(16px, env(safe-area-inset-right, 0px)) calc(.7rem + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  display: flex; gap: 1rem; align-items: center; }
+.sticky-atc .btn { flex: 1; }
+@media (min-width: 900px) { .sticky-atc { display: none !important; } }
+
+/* drawer */
+.scrim { position: fixed; inset: 0; background: rgb(0 0 0 / .35); z-index: 20; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); background: var(--bg); z-index: 21; display: grid; grid-template-rows: auto auto 1fr auto;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px); box-shadow: -8px 0 24px rgb(0 0 0 / .12); }
+.drawer > * { padding-inline: 1.25rem; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; padding-block: .75rem; border-bottom: 1px solid var(--line); }
+.drawer-body { overflow-y: auto; padding-block: 1rem; display: grid; gap: 1rem; align-content: start; }
+.drawer-foot { border-top: 1px solid var(--line); padding-block: 1rem; display: grid; gap: .6rem; }
+.fsb { padding-block: .9rem; border-bottom: 1px solid var(--line); font-size: .9rem; display: grid; gap: .4rem; }
+.fsb .bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.fsb .bar i { display: block; height: 100%; background: var(--accent); }
+.line { display: grid; grid-template-columns: 64px 1fr auto; gap: .8rem; align-items: start; }
+.line .ph { width: 64px; height: 64px; }
+.line .ph svg { width: 50%; height: 50%; }
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: var(--radius); margin-top: .4rem; }
+.qty button { width: 36px; height: 36px; border: 0; background: none; color: var(--fg); font-size: 1.05rem; cursor: pointer; }
+.qty span { min-width: 24px; text-align: center; font-variant-numeric: tabular-nums; }
+.split { background: var(--note); border-radius: var(--radius); padding: .7rem .85rem; font-size: .88rem; }
+.sum { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+.sum.total { font-weight: 600; font-size: 1.05rem; }
+
+/* paginatekst */
+.prose { max-width: 68ch; display: grid; gap: 1rem; padding-bottom: 3.5rem; }
+.prose h2 { margin-top: 1rem; }
+.prose ul, .prose ol { margin: 0; padding-left: 1.3rem; display: grid; gap: .3rem; }
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { text-align: left; padding: .55rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; }
+.concept { background: var(--note); border-radius: var(--radius); padding: .7rem .9rem; font-size: .88rem; }
+.faq-group { display: grid; gap: 0; }
+
+/* blog */
+.posts { display: grid; gap: 1.5rem; }
+@media (min-width: 760px) { .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.post { display: grid; gap: .6rem; text-decoration: none; }
+.post .ph { aspect-ratio: 16/9; }
+
+/* checkout */
+.co { display: grid; gap: 2rem; padding-bottom: 3rem; }
+@media (min-width: 900px) { .co { grid-template-columns: 1.2fr 1fr; } }
+.co fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: .8rem; }
+.co legend { font-family: var(--display); font-size: 1.25rem; margin-bottom: .6rem; }
+.two { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.paym { display: grid; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.paym label { flex-direction: row; display: flex; align-items: center; gap: .7rem; padding: .8rem 1rem; border-bottom: 1px solid var(--line); font-weight: 400; cursor: pointer; }
+.paym label:last-child { border-bottom: 0; }
+.paym input { width: auto; min-height: 0; }
+.summary { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem; display: grid; gap: .8rem; align-content: start; }
+.check { display: flex; gap: .6rem; align-items: start; font-weight: 400; flex-direction: row; }
+.check input { width: auto; min-height: 0; margin-top: .3rem; }
+
+/* footer */
+footer.site { background: var(--surface); border-top: 1px solid var(--line); margin-top: 2rem; font-size: .92rem; }
+footer.site .wrap { padding-block: 2.5rem calc(2.5rem + env(safe-area-inset-bottom, 0px)); display: grid; gap: 2rem; }
+.fcols { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.fcols h3 { font-family: var(--body); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: .6rem; }
+.fcols ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.fcols a { text-decoration: none; } .fcols a:hover { text-decoration: underline; }
+.legal { border-top: 1px solid var(--line); padding-top: 1.2rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; color: var(--muted); font-size: .82rem; }
+
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(84px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: .6rem 1rem; border-radius: var(--radius); z-index: 30; font-size: .9rem; }
+</style>
+
+<a class="skip" href="#main">Naar de inhoud</a>
+<div class="preview" role="note"><div class="wrap"><span><strong>Preview</strong> van Hyggehond. Nog geen echte winkel: je kunt niets bestellen of betalen.</span><span class="muted">Productfoto's volgen; vlakken zijn plaatshouders.</span></div></div>
+<div class="usp"><div class="wrap"><span class="long">Levering in 2–5 werkdagen · 30 dagen bedenktijd · Gratis verzending vanaf € 50</span><span class="short">Gratis verzending vanaf € 50 · 30 dagen bedenktijd</span></div></div>
+
+<header class="site">
+  <div class="wrap">
+    <button class="iconbtn menu-toggle" id="menuBtn" aria-expanded="false" aria-controls="mnav" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="logo" href="#home" aria-label="Hyggehond home">
+      <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><ellipse cx="16" cy="21" rx="7" ry="6"/><ellipse cx="8" cy="13" rx="2.6" ry="3.4"/><ellipse cx="13" cy="8.5" rx="2.6" ry="3.4"/><ellipse cx="19" cy="8.5" rx="2.6" ry="3.4"/><ellipse cx="24" cy="13" rx="2.6" ry="3.4"/></svg>
+      Hyggehond
+    </a>
+    <nav class="main" aria-label="Hoofdmenu" id="mainNav"></nav>
+    <div class="hdr-actions">
+      <button class="iconbtn" id="cartBtn" aria-label="Winkelwagen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="badge" id="cartCount" hidden>0</span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mnav" hidden><div class="wrap" id="mobileNavInner"></div></div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="fcols">
+      <div><h3>Shop</h3><ul>
+        <li><a href="#c-rust-slapen">Rust &amp; slapen</a></li><li><a href="#c-op-pad">Op pad</a></li>
+        <li><a href="#c-eten-spelen">Eten &amp; spelen</a></li><li><a href="#c-cadeaus">Cadeaus</a></li><li><a href="#c-all">Alle producten</a></li></ul></div>
+      <div><h3>Klantenservice</h3><ul>
+        <li><a href="#faq">Veelgestelde vragen</a></li><li><a href="#verzending">Verzending</a></li><li><a href="#retour">Retourneren</a></li>
+        <li><a href="#herroepen">Overeenkomst herroepen</a></li><li><a href="#track-trace">Bestelling volgen</a></li><li><a href="#maatgids">Maatgids</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h3>Hyggehond</h3><ul>
+        <li><a href="#over-ons">Over ons</a></li><li><a href="#journal">Journal</a></li></ul></div>
+      <div><h3>Juridisch</h3><ul>
+        <li><a href="#voorwaarden">Algemene voorwaarden</a></li><li><a href="#privacy">Privacyverklaring</a></li><li><a href="#cookies">Cookieverklaring</a></li>
+        <li><a href="#herroepingsrecht">Herroepingsrecht</a></li><li><a href="#bedrijfsgegevens">Bedrijfsgegevens</a></li></ul></div>
+    </div>
+    <div class="paylogos" aria-label="Betaalmethoden"><span>iDEAL | Wero</span><span>Bancontact</span><span>Visa</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span><span>Klarna</span></div>
+    <div class="legal"><span>Hyggehond is een handelsnaam van Dylan Smit Holding B.V. · KvK [KVK] · Btw [BTW] · [ADRES]</span><span>Prijzen incl. 21% btw</span></div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+  <div class="drawer-head"><h2 id="drawerTitle" style="font-size:1.3rem">Je winkelwagen</h2>
+    <button class="iconbtn" id="drawerClose" aria-label="Sluiten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="fsb" id="fsb"></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</aside>
+<div class="sticky-atc" id="stickyAtc" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const P = DATA.products, BLOGS = DATA.blogs;
+const FREE = 50, SHIP = 4.95;
+const COLS = [
+  { slug: "rust-slapen", name: "Rust & slapen", icon: "bed", intro: "Een goede plek om te slapen is de basis voor een ontspannen hond. Van orthopedische manden voor oudere honden tot een zachte donut voor de oprollers." },
+  { slug: "op-pad", name: "Op pad", icon: "leash", intro: "Alles voor fijne wandelingen en zorgeloos reizen: tuigen die niet knellen, riemen die tegen regen kunnen en slimme spullen voor in de auto." },
+  { slug: "eten-drinken", name: "Eten & drinken", icon: "bowl", intro: "Voerbakken die mooi staan in je keuken en slimme oplossingen voor snelle eters." },
+  { slug: "spelen-verrijking", name: "Spelen & verrijking", icon: "ball", intro: "Een moe hoofd is een tevreden hond. Snuffelen, puzzelen en kauwen voor binnen en buiten." },
+  { slug: "verzorging", name: "Verzorging", icon: "brush", intro: "Minder haren op de bank en schone poten na een modderige wandeling." },
+  { slug: "thuis", name: "Thuis", icon: "basket", intro: "Rustige spullen die een plek verdienen in je interieur." },
+  { slug: "cadeaus", name: "Cadeaus", icon: "gift", intro: "Voor de nieuwe pup in de familie, of voor jezelf. Sets die je meteen kunt gebruiken." }
+];
+const colByName = Object.fromEntries(COLS.map(c => [c.name, c]));
+const NAV = [["c-rust-slapen", "Rust & slapen"], ["c-op-pad", "Op pad"], ["c-eten-spelen", "Eten & spelen"], ["c-cadeaus", "Cadeaus"], ["maatgids", "Maatgids"], ["journal", "Journal"]];
+const BEST = ["orthopedische-hondenmand-rust", "y-tuig-zacht-gevoerd", "snuffelmat", "cadeauset-nieuwe-pup"];
+
+const ICONS = {
+  bed: '<path d="M3 15.5c0-2.8 2-4.5 4.5-4.5h9c2.5 0 4.5 1.7 4.5 4.5V18H3z"/><path d="M6.5 11c.3-1.8 2.4-3 5.5-3s5.2 1.2 5.5 3"/><path d="M4 18v1.5M20 18v1.5"/>',
+  leash: '<circle cx="17.5" cy="6.5" r="2.8"/><path d="M15.5 8.5C11 13 9 15 4 20"/><path d="M6.5 15.5l2 2"/>',
+  bowl: '<path d="M3 12h18c-.4 4-4.2 7-9 7s-8.6-3-9-7z"/><path d="M8.5 9.5c.3-1.3 1.2-2 2.3-2M13 9c.3-1.3 1.2-2 2.3-2"/>',
+  ball: '<circle cx="12" cy="12" r="8"/><path d="M5 9.5c3.5 1.5 10.5 1.5 14 0M5 14.5c3.5-1.5 10.5-1.5 14 0"/>',
+  brush: '<rect x="4" y="12" width="12" height="5" rx="1"/><path d="M6.5 12V8M9 12V7M11.5 12V7M14 12V8"/><path d="M16 14.5h4.5"/>',
+  basket: '<path d="M4 10h16l-1.8 9H5.8z"/><path d="M8 10l4-5 4 5"/><path d="M9 13.5v3M12 13.5v3M15 13.5v3"/>',
+  gift: '<rect x="4" y="10.5" width="16" height="9.5" rx="1"/><path d="M3 7.5h18v3H3zM12 7.5V20"/><path d="M12 7.5C10.5 4.8 7.5 4.5 7.5 6S10 7.5 12 7.5c2 0 4.5 0 4.5-1.5S13.5 4.8 12 7.5z"/>',
+  truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.6"/><circle cx="17" cy="17.5" r="1.6"/>',
+  ret: '<path d="M9 7H4v5"/><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/>',
+  paw: '<ellipse cx="12" cy="15" rx="4.5" ry="3.8"/><circle cx="6.5" cy="10" r="1.7"/><circle cx="10" cy="6.8" r="1.7"/><circle cx="14" cy="6.8" r="1.7"/><circle cx="17.5" cy="10" r="1.7"/>'
+};
+const svg = (k, sw = 1.3) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const eur = n => n.toLocaleString("nl-NL", { style: "currency", currency: "EUR" });
+const byH = Object.fromEntries(P.map(p => [p.h, p]));
+const pIndex = h => P.findIndex(p => p.h === h);
+function ph(p, cls = "", tag = "") {
+  const mix = 30 + (pIndex(p.h) * 7) % 35;
+  return `<div class="ph ${cls}" style="background:color-mix(in oklab, var(--sand) ${mix}%, var(--bg))">${tag ? `<span class="tag">${tag}</span>` : ""}${svg(colByName[p.c].icon)}</div>`;
+}
+const fromPrice = p => Math.min(...p.v.map(v => v.p));
+
+/* levertijd: werkdagen, cut-off 15:00 */
+function addWorkdays(d, n) { d = new Date(d); while (n > 0) { d.setDate(d.getDate() + 1); const w = d.getDay(); if (w && w < 6) n--; } return d; }
+function deliveryText() {
+  const now = new Date(); let start = new Date(now);
+  if (now.getHours() >= 15 || now.getDay() === 0 || now.getDay() === 6) start = addWorkdays(now, 1);
+  const f = { weekday: "short", day: "numeric", month: "short" };
+  return `${addWorkdays(start, 2).toLocaleDateString("nl-NL", f)} – ${addWorkdays(start, 5).toLocaleDateString("nl-NL", f)}`;
+}
+
+/* winkelwagen */
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("hh-cart") || "[]").filter(i => byH[i.h]); } catch (e) { cart = []; }
+const save = () => { try { localStorage.setItem("hh-cart", JSON.stringify(cart)); } catch (e) {} };
+const subtotal = () => cart.reduce((s, i) => s + byH[i.h].v[i.v].p * i.q, 0);
+const count = () => cart.reduce((s, i) => s + i.q, 0);
+function addToCart(h, v) {
+  const f = cart.find(i => i.h === h && i.v === v);
+  f ? f.q++ : cart.push({ h, v, q: 1 });
+  save(); renderCart(); openDrawer();
+}
+function setQty(idx, d) { cart[idx].q += d; if (cart[idx].q <= 0) cart.splice(idx, 1); save(); renderCart(); }
+function shipCost(st) { return st >= FREE || st === 0 ? 0 : SHIP; }
+function parcels() { return new Set(cart.map(i => byH[i.h].l)).size; }
+function renderCart() {
+  const n = count(), st = subtotal(), rest = Math.max(0, FREE - st);
+  const b = document.getElementById("cartCount"); b.hidden = n === 0; b.textContent = n;
+  document.getElementById("cartBtn").setAttribute("aria-label", `Winkelwagen, ${n} ${n === 1 ? "artikel" : "artikelen"}`);
+  document.getElementById("fsb").innerHTML = n === 0 ? `<span class="muted">Gratis verzending vanaf ${eur(FREE)}</span>` :
+    (rest > 0 ? `<span>Nog <strong>${eur(rest)}</strong> tot gratis verzending</span>` : `<span>Je bestelling wordt <strong>gratis verzonden</strong>.</span>`) +
+    `<div class="bar" role="progressbar" aria-label="Voortgang naar gratis verzending" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.min(100, Math.round(st / FREE * 100))}"><i style="width:${Math.min(100, st / FREE * 100)}%"></i></div>`;
+  const body = document.getElementById("drawerBody"), foot = document.getElementById("drawerFoot");
+  if (!n) {
+    body.innerHTML = `<p>Je winkelwagen is nog leeg.</p><a class="btn ghost" href="#c-all" data-close>Bekijk alle producten</a>`;
+    foot.innerHTML = ""; return;
+  }
+  const pc = parcels();
+  body.innerHTML = cart.map((i, idx) => { const p = byH[i.h], v = p.v[i.v]; return `
+    <div class="line">${ph(p)}<div><a href="#p-${p.h}" data-close style="text-decoration:none;font-weight:500">${esc(p.t)}</a>
+      <div class="muted" style="font-size:.85rem">${esc(v.n)} · levering 2–5 werkdagen</div>
+      <div class="qty"><button aria-label="Eén minder" data-q="${idx}" data-d="-1">−</button><span aria-live="polite">${i.q}</span><button aria-label="Eén meer" data-q="${idx}" data-d="1">+</button></div></div>
+      <div style="font-variant-numeric:tabular-nums">${eur(v.p * i.q)}</div></div>`; }).join("") +
+    (pc > 1 ? `<p class="split" role="status">Je bestelling komt in ${pc} pakketten, omdat de producten bij verschillende Europese partners liggen. Je ontvangt per pakket een trackinglink. Dit kost je niets extra.</p>` : "") +
+    crossSellCart();
+  const sc = shipCost(st);
+  foot.innerHTML = `<div class="sum"><span>Subtotaal</span><span>${eur(st)}</span></div>
+    <div class="sum"><span>Verzending</span><span>${sc ? eur(sc) : "Gratis"}</span></div>
+    <div class="sum total"><span>Totaal incl. btw</span><span>${eur(st + sc)}</span></div>
+    <a class="btn full" href="#checkout" data-close>Afrekenen</a>
+    <div class="paylogos" style="justify-content:center"><span>iDEAL | Wero</span><span>Bancontact</span><span>Apple Pay</span><span>Klarna</span></div>`;
+}
+function crossSellCart() {
+  const inCart = new Set(cart.map(i => i.h));
+  const pairs = { "y-tuig-zacht-gevoerd": "verstelbare-riem-biothane", "orthopedische-hondenmand-rust": "hondenplaid-teddy-waterafstotend", "verstelbare-riem-biothane": "halsband-biothane", "donutmand-nest": "hondenplaid-teddy-waterafstotend", "slowfeeder-voerbak": "likmat-set", "snuffelmat": "likmat-set" };
+  const sug = cart.map(i => pairs[i.h]).find(h => h && !inCart.has(h)) || ["snuffelmat", "likmat-set"].find(h => !inCart.has(h));
+  if (!sug) return "";
+  const p = byH[sug];
+  return `<div style="border-top:1px solid var(--line);padding-top:1rem;display:grid;gap:.6rem"><span class="eyebrow">Past erbij</span>
+    <div class="line">${ph(p)}<div><span style="font-weight:500">${esc(p.t)}</span><div class="muted" style="font-size:.85rem">${eur(p.v[0].p)}</div></div>
+    <button class="btn ghost" style="padding:0 .8rem" data-add="${p.h}" aria-label="${esc(p.t)} toevoegen">+</button></div></div>`;
+}
+
+/* drawer */
+let lastFocus = null;
+const drawer = document.getElementById("drawer"), scrim = document.getElementById("scrim");
+function openDrawer() { lastFocus = document.activeElement; drawer.hidden = false; scrim.hidden = false; document.getElementById("drawerClose").focus(); }
+function closeDrawer() { drawer.hidden = true; scrim.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+document.getElementById("cartBtn").onclick = openDrawer;
+document.getElementById("drawerClose").onclick = closeDrawer;
+scrim.onclick = closeDrawer;
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !drawer.hidden) closeDrawer(); });
+drawer.addEventListener("click", e => {
+  const q = e.target.closest("[data-q]"); if (q) setQty(+q.dataset.q, +q.dataset.d);
+  const a = e.target.closest("[data-add]"); if (a) addToCart(a.dataset.add, 0);
+  if (e.target.closest("[data-close]")) closeDrawer();
+});
+
+/* menu */
+const menuBtn = document.getElementById("menuBtn"), mnav = document.getElementById("mnav");
+function navHtml(cur) { return NAV.map(([h, t]) => `<a href="#${h}"${cur === h ? ' aria-current="page"' : ""}>${esc(t)}</a>`).join(""); }
+menuBtn.onclick = () => { const o = mnav.hidden; mnav.hidden = !o; menuBtn.setAttribute("aria-expanded", String(o)); };
+
+/* views */
+const main = document.getElementById("main");
+function card(p) {
+  return `<a class="card" href="#p-${p.h}">${ph(p)}<h3>${esc(p.t)}</h3><span class="price">${p.v.length > 1 ? "vanaf " : ""}${eur(fromPrice(p))}</span></a>`;
+}
+function viewHome() {
+  const art = byH["orthopedische-hondenmand-rust"];
+  return `
+  <section class="hero"><div class="wrap">
+    <div><span class="eyebrow">Mooie basics voor je hond</span>
+      <h1 style="margin-top:.6rem">Rust in huis, plezier op pad.</h1>
+      <p class="lead">Mooie basics voor je hond, getest door [NAAM HOND] en binnen 2–5 werkdagen bij je thuis.</p>
+      <div class="ctas"><a class="btn" href="#c-rust-slapen">Shop manden</a><a class="btn ghost" href="#c-op-pad">Op pad →</a></div></div>
+    <figure class="hero-art" style="margin:0">
+      <svg viewBox="0 0 500 400" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+        <rect x="0" y="290" width="500" height="110" style="fill:color-mix(in oklab, var(--sand) 80%, var(--bg))"/>
+        <rect x="70" y="210" width="360" height="100" rx="40" style="fill:var(--bg)"/>
+        <rect x="95" y="190" width="310" height="60" rx="30" style="fill:color-mix(in oklab, var(--sand) 40%, var(--bg))"/>
+        <ellipse cx="250" cy="215" rx="105" ry="38" style="fill:var(--accent)" opacity=".85"/>
+        <circle cx="160" cy="200" r="30" style="fill:var(--accent)"/>
+        <ellipse cx="140" cy="183" rx="11" ry="20" style="fill:var(--accent)" transform="rotate(-25 140 183)"/>
+        <path d="M150 205q8 6 16 0" fill="none" style="stroke:var(--bg)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M352 222q40-10 45 15" fill="none" style="stroke:var(--accent)" stroke-width="16" stroke-linecap="round"/>
+        <circle cx="400" cy="70" r="26" style="fill:var(--bg)" opacity=".7"/>
+      </svg>
+      <figcaption>Hier komt je eigen foto: [NAAM HOND] in de mand Rust</figcaption>
+    </figure>
+  </div></section>
+
+  <section class="block tint"><div class="wrap promises">
+    <div class="promise">${svg("paw", 1.5)}<h3>Getest door [NAAM HOND]</h3><p class="muted">Elk product gaat eerst bij ons thuis mee op proef. Wat niet goed genoeg is, komt de winkel niet in.</p></div>
+    <div class="promise">${svg("truck", 1.5)}<h3>Snel geleverd vanuit Europa</h3><p class="muted">Al onze partners hebben een magazijn in de EU. Geen douane, geen weken wachten.</p></div>
+    <div class="promise">${svg("ret", 1.5)}<h3>Eerlijk, zonder trucs</h3><p class="muted">Geen nep-aftelklokken of opgeblazen "van"-prijzen. Wel 30 dagen bedenktijd.</p></div>
+  </div></section>
+
+  <section class="block"><div class="wrap">
+    <div class="sec-head"><h2>Shop per categorie</h2><a href="#c-all">Alle producten</a></div>
+    <div class="cats">${[["rust-slapen", "Rust & slapen", "bed"], ["op-pad", "Op pad", "leash"], ["eten-spelen", "Eten & spelen", "bowl"], ["cadeaus", "Cadeaus", "gift"]].map(([s, n, i], k) =>
+      `<a class="cat" href="#c-${s}"><div class="ph" style="background:color-mix(in oklab, var(--sand) ${35 + k * 9}%, var(--bg))">${svg(i)}</div><span>${esc(n)}</span></a>`).join("")}</div>
+  </div></section>
+
+  <section class="block tint"><div class="wrap">
+    <div class="sec-head"><h2>Favorieten van [NAAM HOND]</h2><a href="#c-all">Bekijk alles</a></div>
+    <div class="grid">${BEST.map(h => card(byH[h])).join("")}</div>
+  </div></section>
+
+  <section class="block"><div class="wrap story">
+    ${ph(art, "", "Foto: Dylan met [NAAM HOND]")}
+    <div><span class="eyebrow">Ons verhaal</span><h2 style="margin-top:.5rem">Hoi, ik ben Dylan. En dit is [NAAM HOND].</h2>
+    <p>Hyggehond begon met een simpele zoektocht: een mand die mijn hond fijn vond én die niet uit de toon viel in de woonkamer. Dat bleek lastiger dan gedacht. Nu zoeken we het voor je uit: we testen, kiezen en houden alleen wat echt goed is.</p>
+    <p><a href="#over-ons">Lees ons verhaal →</a></p></div>
+  </div></section>
+
+  <section class="block tint"><div class="wrap">
+    <h2>Wat andere baasjes zeggen</h2>
+    <div class="empty-reviews" style="margin-top:1.2rem"><strong>Nog geen reviews</strong>
+      <p class="muted">Dit blok verschijnt vanaf 5 echte reviews. Alleen klanten die echt bij ons hebben besteld kunnen een review plaatsen, en we plaatsen ook kritische reviews.</p></div>
+  </div></section>
+
+  <section class="block"><div class="wrap newsletter">
+    <div><h2>Twijfel je over de maat?</h2><p class="muted" style="margin-top:.5rem">Met een meetlint en twee minuten weet je het zeker.</p></div>
+    <div><a class="btn ghost" href="#maatgids">Naar de maatgids</a></div>
+  </div></section>
+
+  <section class="block tint"><div class="wrap newsletter">
+    <div><h2>Tips voor een blije hond, en 10% op je eerste bestelling</h2>
+      <p class="muted" style="margin-top:.5rem">Eén keer per twee weken: praktische tips, nieuwe producten en af en toe iets leuks. Afmelden kan altijd.</p></div>
+    <div><form class="nl-form" id="nlForm" novalidate>
+      <label style="flex:1 1 220px">E-mailadres<input type="email" id="nlEmail" autocomplete="email" required placeholder="naam@voorbeeld.nl"></label>
+      <button class="btn" style="align-self:end">Aanmelden</button></form>
+      <p class="muted" style="font-size:.82rem;margin-top:.5rem">We gebruiken je e-mailadres alleen voor de nieuwsbrief. Lees onze <a href="#privacy">privacyverklaring</a>.</p>
+      <p class="ok-msg" id="nlOk" hidden style="margin-top:.6rem">Bijna klaar. Bevestig je aanmelding via de e-mail die we je net stuurden. <span class="muted">(Preview: er is niets verstuurd.)</span></p></div>
+  </div></section>`;
+}
+function viewCollection(slug) {
+  let title, intro, list;
+  if (slug === "all") { title = "Alle producten"; intro = "Ons hele assortiment: klein, gecureerd en getest door [NAAM HOND]."; list = P; }
+  else if (slug === "eten-spelen") { title = "Eten & spelen"; intro = "Voerbakken, slowfeeders, snuffelmatten en speelgoed om je hond lekker bezig te houden."; list = P.filter(p => p.c === "Eten & drinken" || p.c === "Spelen & verrijking"); }
+  else { const c = COLS.find(c => c.slug === slug); if (!c) return null; title = c.name; intro = c.intro; list = P.filter(p => p.c === c.name); }
+  const subs = [...new Set(list.map(p => p.c))];
+  return `<div class="wrap">
+    <nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>${esc(title)}</span></nav>
+    <div class="col-head"><h1>${esc(title)}</h1><p>${esc(intro)}</p></div>
+    <div class="toolbar">
+      <div class="chips" id="chips">${subs.length > 1 ? `<button class="chip" aria-pressed="true" data-f="">Alles</button>` + subs.map(s => `<button class="chip" aria-pressed="false" data-f="${esc(s)}">${esc(s)}</button>`).join("") : `<span class="muted">${list.length} producten</span>`}</div>
+      <label style="flex-direction:row;display:flex;align-items:center;gap:.5rem;font-weight:400">Sorteer
+        <select id="sort"><option value="">Aanbevolen</option><option value="asc">Prijs laag–hoog</option><option value="desc">Prijs hoog–laag</option></select></label>
+    </div>
+    <div class="grid" id="colGrid" style="padding-bottom:3rem"></div>
+  </div>`;
+}
+function bindCollection(slug) {
+  let base = slug === "all" ? P : slug === "eten-spelen" ? P.filter(p => p.c === "Eten & drinken" || p.c === "Spelen & verrijking") : P.filter(p => colByName[p.c].slug === slug);
+  let f = "", s = "";
+  const draw = () => {
+    let l = base.filter(p => !f || p.c === f);
+    if (s) l = [...l].sort((a, b) => s === "asc" ? fromPrice(a) - fromPrice(b) : fromPrice(b) - fromPrice(a));
+    document.getElementById("colGrid").innerHTML = l.map(card).join("");
+  };
+  document.getElementById("chips").onclick = e => { const b = e.target.closest("[data-f]"); if (!b) return; f = b.dataset.f;
+    document.querySelectorAll("#chips .chip").forEach(c => c.setAttribute("aria-pressed", String(c === b))); draw(); };
+  document.getElementById("sort").onchange = e => { s = e.target.value; draw(); };
+  draw();
+}
+let curVar = 0;
+function viewProduct(h) {
+  const p = byH[h]; if (!p) return null;
+  const c = colByName[p.c];
+  curVar = 0;
+  const xs = P.filter(q => q.c === p.c && q.h !== p.h).slice(0, 3);
+  const extra = xs.length < 3 ? P.filter(q => q.c !== p.c && q.h !== p.h && BEST.includes(q.h)).slice(0, 3 - xs.length) : [];
+  return `<div class="wrap">
+    <nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><a href="#c-${c.slug}">${esc(c.name)}</a><span>/</span><span>${esc(p.t)}</span></nav>
+    <div class="pdp">
+      <div class="gallery">${ph(p, "main", "Productfoto volgt")}<div class="thumbs">${[0, 1, 2, 3].map(() => ph(p)).join("")}</div>
+        <p class="ph-note">Plaatshouders. Hier komen 5–7 eigen foto's en een korte video met [NAAM HOND].</p></div>
+      <div class="buy">
+        <div><span class="eyebrow">${esc(p.c)}</span><h1 style="margin-top:.4rem;font-size:clamp(1.6rem,3.5vw,2.3rem)">${esc(p.t)}</h1></div>
+        <div><div class="pprice" id="pPrice">${eur(p.v[0].p)}<small>incl. btw</small></div>
+          <p class="ship-note">Gratis verzending vanaf ${eur(FREE)}, anders ${eur(SHIP)}</p></div>
+        ${p.v.length > 1 ? `<div><div style="display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:.4rem"><span id="sizeLabel">Maat: <strong>${esc(p.v[0].n)}</strong></span><a href="#maatgids">Maatgids</a></div>
+          <div class="sizes" role="group" aria-label="Kies een maat">${p.v.map((v, i) => `<button class="size" aria-pressed="${i === 0}" data-v="${i}">${esc(v.n)}</button>`).join("")}</div></div>` : ""}
+        <p class="stock"><span class="dot" aria-hidden="true"></span><span>Op voorraad · verwachte levering <strong>${deliveryText()}</strong></span></p>
+        <button class="btn full" id="atc">In winkelwagen</button>
+        <div class="paylogos"><span>iDEAL | Wero</span><span>Bancontact</span><span>Visa</span><span>Mastercard</span><span>Apple Pay</span><span>Klarna</span></div>
+        <p>${esc(p.i)}</p>
+        <div>
+          <details class="acc" open><summary>Waarom je dit fijn vindt</summary><div class="in"><ul>${p.b.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></details>
+          <details class="acc"><summary>Specificaties &amp; maten</summary><div class="in"><ul>${p.s.map(x => `<li>${esc(x)}</li>`).join("")}<li>Maten: ${p.v.map(v => esc(v.n)).join(" · ")}</li></ul></div></details>
+          <details class="acc"><summary>Verzending &amp; retour</summary><div class="in"><p>Verzending binnen NL en BE in 2–5 werkdagen, vanuit een Europees magazijn. Gratis vanaf € 50. Je hebt 30 dagen bedenktijd; de kosten voor het terugsturen zijn voor jou, behalve bij een defect of een verkeerde levering. <a href="#retour">Lees meer</a></p></div></details>
+          <details class="acc"><summary>Veelgestelde vragen</summary><div class="in">${p.f.map(([q, a]) => `<p><strong>${esc(q)}</strong><br>${esc(a)}</p>`).join("")}</div></details>
+          <details class="acc"><summary>Productveiligheid</summary><div class="in"><dl class="gpsr">
+            <dt>Fabrikant</dt><dd>[Naam fabrikant], [adres], [e-mail]. Volgt van de leverancier.</dd>
+            <dt>Verantwoordelijke persoon in de EU</dt><dd>Alleen als de fabrikant buiten de EU zit.</dd>
+            <dt>Productidentificatie</dt><dd>HH-${String(pIndex(p.h) + 1).padStart(2, "0")}-${1} / batch volgens label</dd>
+            <dt>Waarschuwingen</dt><dd>${esc(p.w)}</dd></dl>
+            <p class="muted" style="font-size:.85rem">Een veiligheidsprobleem met dit product? Meld het via info@hyggehond.nl.</p></div></details>
+        </div>
+      </div>
+    </div>
+    <section style="padding-bottom:3rem"><h2 style="margin-bottom:1.2rem">Past mooi bij</h2><div class="grid">${[...xs, ...extra].map(card).join("")}</div></section>
+    <section style="padding-bottom:3.5rem"><h2>Reviews</h2>
+      <div class="empty-reviews" style="margin-top:1rem"><strong>Nog geen reviews voor dit product</strong>
+      <p class="muted">Reviews kunnen alleen worden geplaatst door klanten die dit product bij ons hebben gekocht. Ze worden automatisch uitgenodigd na levering. We plaatsen alle reviews, ook de kritische.</p></div></section>
+  </div>`;
+}
+let stickyObs = null;
+function bindProduct(h) {
+  const p = byH[h];
+  const st = document.getElementById("stickyAtc");
+  const upd = () => {
+    document.getElementById("pPrice").innerHTML = `${eur(p.v[curVar].p)}<small>incl. btw</small>`;
+    const sl = document.getElementById("sizeLabel"); if (sl) sl.innerHTML = `Maat: <strong>${esc(p.v[curVar].n)}</strong>`;
+    st.innerHTML = `<div style="display:grid;line-height:1.3;min-width:0"><span style="font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.t)}</span><strong style="font-variant-numeric:tabular-nums">${eur(p.v[curVar].p)}</strong></div><button class="btn" id="stickyBtn">In winkelwagen</button>`;
+    document.getElementById("stickyBtn").onclick = () => addToCart(h, curVar);
+  };
+  main.querySelectorAll(".size").forEach(b => b.onclick = () => { curVar = +b.dataset.v; main.querySelectorAll(".size").forEach(x => x.setAttribute("aria-pressed", String(x === b))); upd(); });
+  document.getElementById("atc").onclick = () => addToCart(h, curVar);
+  upd();
+  if ("IntersectionObserver" in window) {
+    stickyObs = new IntersectionObserver(e => { st.hidden = e[0].isIntersecting || e[0].boundingClientRect.top > 0; });
+    stickyObs.observe(document.getElementById("atc"));
+  }
+}
+
+const PAGES = {
+  "over-ons": () => `<h1>Hygge, maar dan voor je hond</h1>
+    <p>Hygge is het Deense woord voor dat gevoel van rust, warmte en gezelligheid. Op de bank met een plaid, regen tegen het raam. Honden snappen dat beter dan wie ook.</p>
+    <p>Hyggehond is begonnen door Dylan en [NAAM HOND], een [LEEFTIJD] jaar oude [RAS]. Toen we een nieuwe mand zochten, vonden we vooral twee soorten: goedkoop en snel kapot, of mooi maar onbetaalbaar en met weken levertijd. Daar zat weinig tussen.</p>
+    <p>Dus besloten we het zelf te doen. We kiezen een klein assortiment rustige, mooie basics voor in huis en onderweg. Alles wat we verkopen, heeft [NAAM HOND] eerst getest.</p>
+    <h2>Onze beloftes</h2>
+    <ol><li><strong>Eerst getest, dan verkocht.</strong> We bestellen samples, gebruiken ze thuis en op pad, en kijken naar naden, materialen en geur.</li>
+    <li><strong>Snel en dichtbij.</strong> Onze Europese partners leveren vanuit een magazijn in de EU, binnen 2–5 werkdagen en zonder verrassingen bij de douane.</li>
+    <li><strong>Eerlijk.</strong> Echte foto's, echte reviews en duidelijke prijzen. Geen nep-afteltimers of verzonnen kortingen.</li></ol>
+    <h2>Hoe we werken</h2>
+    <p>We hebben zelf geen magazijn. Je bestelling wordt rechtstreeks verstuurd door onze Europese partners. Wij selecteren de producten, controleren de kwaliteit en zijn je aanspreekpunt voor alles.</p>
+    <p class="muted">Hyggehond is een handelsnaam van Dylan Smit Holding B.V. · KvK [KVK]</p>`,
+  "faq": () => {
+    const G = [["Bestellen & betalen", [["Hoe kan ik betalen?", "Met iDEAL | Wero, Bancontact, creditcard, Apple Pay, Google Pay of achteraf met Klarna."], ["Heb ik een account nodig?", "Nee, je kunt als gast bestellen."], ["Zijn de prijzen inclusief btw?", "Ja, alle prijzen zijn inclusief 21% btw. Verzendkosten zie je in je winkelwagen, voordat je afrekent."], ["Kan ik mijn bestelling nog wijzigen?", "Mail ons binnen 2 uur na je bestelling. Daarna is je bestelling meestal al doorgestuurd naar het magazijn."]]],
+      ["Verzending", [["Hoe lang duurt de levering?", "2–5 werkdagen in Nederland en België. Op elke productpagina staat de verwachte leverdatum."], ["Wat kost verzending?", "Gratis vanaf € 50, anders € 4,95."], ["Waarom komt mijn bestelling in meerdere pakketten?", "Onze producten liggen bij verschillende Europese partners. Je ontvangt per pakket een trackinglink, zonder extra kosten."], ["Versturen jullie vanuit China?", "Nee. Al onze partners leveren vanuit een magazijn binnen de EU. Je betaalt dus nooit douanekosten."]]],
+      ["Retour & herroepen", [["Hoeveel bedenktijd heb ik?", "30 dagen na ontvangst."], ["Hoe stuur ik iets terug?", "Meld je retour aan via Overeenkomst herroepen. Je krijgt binnen 1 werkdag het retouradres."], ["Wie betaalt het terugsturen?", "Jij, tenzij het product defect is of we iets verkeerds hebben geleverd. Dan betalen wij alles."], ["Wanneer krijg ik mijn geld terug?", "Uiterlijk 14 dagen na je herroeping. Meestal binnen 5 werkdagen nadat we het product terug hebben."]]],
+      ["Producten & maten", [["Hoe weet ik welke maat ik nodig heb?", "Bekijk de maatgids. Twijfel je, mail ons de maten en het ras van je hond, dan adviseren we je."], ["Zijn de producten veilig?", "We vragen bij elke leverancier de productveiligheidsgegevens op en tonen ze op de productpagina. Laat je hond nooit onbeheerd met speelgoed, tuig of halsband."]]]];
+    return `<h1>Veelgestelde vragen</h1>` + G.map(([t, qs]) => `<h2>${esc(t)}</h2><div class="faq-group">${qs.map(([q, a]) => `<details class="acc"><summary>${esc(q)}</summary><div class="in"><p>${esc(a)}</p></div></details>`).join("")}</div>`).join("");
+  },
+  "contact": () => `<h1>Contact</h1><p>Vraag over je bestelling, maatadvies of iets anders? We reageren op werkdagen binnen 1 werkdag.</p>
+    <form class="form" data-demo="Dank je wel. We hebben je bericht ontvangen en reageren binnen 1 werkdag.">
+      <label>Naam<input id="cName" autocomplete="name" required></label>
+      <label>E-mail<input id="cMail" type="email" autocomplete="email" required></label>
+      <label>Ordernummer (optioneel)<input id="cOrder" placeholder="#HH1001"></label>
+      <label>Je vraag<textarea id="cMsg" required></textarea></label>
+      <button class="btn">Versturen</button></form>
+    <p><strong>E-mail:</strong> <span style="user-select:all">info@hyggehond.nl</span></p>
+    <p class="muted">Dylan Smit Holding B.V., h.o.d.n. Hyggehond · [ADRES] · KvK [KVK] · Btw [BTW]<br>Retourneren? Stuur niets naar dit adres. Meld je retour eerst <a href="#herroepen">hier</a> aan.</p>`,
+  "track-trace": () => `<h1>Waar is mijn bestelling?</h1><p>Vul je ordernummer en e-mailadres in. Je ziet dan de status van elk pakket.</p>
+    <form class="form" data-track>
+      <label>Ordernummer<input id="tOrder" placeholder="#HH1001" required></label>
+      <label>E-mailadres<input id="tMail" type="email" required></label>
+      <button class="btn">Bekijk status</button></form>
+    <div id="trackOut"></div>`,
+  "maatgids": () => `<h1>Meet je hond in 2 minuten</h1><p>Je hebt een zacht meetlint nodig (of een touwtje en een rolmaat) en een paar snoepjes.</p>
+    <div class="tw"><table><thead><tr><th>Product</th><th>Wat meet je?</th><th>Hoe?</th></tr></thead><tbody>
+      <tr><td>Mand / kussen</td><td>Lengte</td><td>Laat je hond liggen zoals hij graag slaapt. Meet van neus tot staartaanzet en tel er <strong>15–20 cm</strong> bij op.</td></tr>
+      <tr><td>Donutmand</td><td>Lengte opgerold</td><td>Meet opgerold van neus tot staartaanzet en kies een diameter die <strong>10–15 cm</strong> groter is.</td></tr>
+      <tr><td>Tuig</td><td>Borst- en nekomvang</td><td>Borst: rondom het breedste deel, net achter de voorpoten. Nek: waar een halsband zou zitten.</td></tr>
+      <tr><td>Halsband</td><td>Nekomvang</td><td>Meet en tel er 2 vingers ruimte bij op.</td></tr>
+      <tr><td>Regenjas / badjas</td><td>Ruglengte</td><td>Van nekaanzet tot staartaanzet.</td></tr></tbody></table></div>
+    <h2>Reken je mandmaat uit</h2>
+    <form class="form" id="sizeCalc" novalidate><div class="two">
+      <label>Lengte liggend (cm)<input id="scLen" type="number" inputmode="numeric" min="20" max="160" value="75"></label>
+      <label>Slaapt je hond…<select id="scType"><option value="flat">languit</option><option value="donut">opgerold</option></select></label></div></form>
+    <p class="ok-msg" id="scOut" role="status"></p>
+    <p><strong>Tussen twee maten?</strong> Kies bij manden de grotere maat. Kies bij tuigen de grotere maat en stel hem strakker af.</p>`,
+  "herroepen": () => `<h1>Overeenkomst herroepen</h1><p>Wil je je bestelling (of een deel ervan) terugsturen? Vul het formulier in. Je ontvangt direct een ontvangstbevestiging per e-mail en binnen 1 werkdag het retouradres.</p>
+    <form class="form" data-herroep>
+      <label>Naam<input id="hName" autocomplete="name" required></label>
+      <label>E-mailadres<input id="hMail" type="email" autocomplete="email" required></label>
+      <label>Ordernummer<input id="hOrder" placeholder="#HH1001" required></label>
+      <label>Welke producten? (leeg = hele bestelling)<textarea id="hProd"></textarea></label>
+      <label>Reden (optioneel)<input id="hReason"></label>
+      <button class="btn">Herroeping bevestigen</button></form>
+    <div id="herroepOut"></div>`,
+  "verzending": () => `<p class="concept">Concepttekst. De volledige versie staat in webshop/05-teksten/juridisch/verzendbeleid.md.</p><h1>Verzendbeleid</h1>
+    <div class="tw"><table><thead><tr><th>Bestelwaarde (incl. btw)</th><th>Verzendkosten</th></tr></thead><tbody><tr><td>Vanaf € 50</td><td><strong>Gratis</strong></td></tr><tr><td>Onder € 50</td><td>€ 4,95</td></tr></tbody></table></div>
+    <p>We leveren in Nederland en België. Je bestelling wordt meestal binnen 1 werkdag verwerkt en daarna binnen <strong>2–5 werkdagen</strong> bezorgd, vanuit magazijnen van onze Europese partners met PostNL, DHL, DPD of GLS.</p>
+    <h2>Meerdere pakketten</h2><p>Bestel je producten uit verschillende categorieën, dan kan je bestelling in meer dan één pakket komen. Je krijgt per pakket een e-mail met een trackinglink. Dit kost je niets extra.</p>`,
+  "retour": () => `<p class="concept">Concepttekst. De volledige versie staat in webshop/05-teksten/juridisch/retourbeleid.md.</p><h1>Retourbeleid</h1>
+    <p>Je hebt bij ons <strong>30 dagen bedenktijd</strong>, vanaf de dag dat je je bestelling hebt ontvangen. Dat is langer dan de wettelijke 14 dagen.</p>
+    <h2>Zo retourneer je</h2><ol><li>Meld je retour aan via <a href="#herroepen">Overeenkomst herroepen</a>.</li><li>Je ontvangt binnen 1 werkdag het retouradres in NL of de EU.</li><li>Stuur het product binnen 14 dagen na je aanmelding terug en bewaar je verzendbewijs.</li></ol>
+    <h2>Kosten</h2><p>De kosten van het terugsturen zijn voor jou. Is het product defect of hebben we iets verkeerds geleverd? Dan betalen wij alles.</p>
+    <h2>Terugbetaling</h2><p>Binnen 14 dagen na je herroeping, via de betaalmethode die je gebruikte. Meestal binnen 5 werkdagen na ontvangst.</p>`,
+  "herroepingsrecht": () => `<p class="concept">Concepttekst. De volledige versie met modelformulier staat in webshop/05-teksten/juridisch/herroepingsrecht.md.</p><h1>Herroepingsrecht</h1>
+    <p>Je hebt het recht om binnen 14 dagen zonder opgave van redenen de overeenkomst te herroepen. Hyggehond verlengt deze termijn vrijwillig naar <strong>30 dagen</strong>.</p>
+    <p>Herroepen kan online via <a href="#herroepen">Overeenkomst hier herroepen</a>, per e-mail naar info@hyggehond.nl of per post.</p>
+    <h2>Modelformulier voor herroeping</h2>
+    <p>Aan: Dylan Smit Holding B.V., h.o.d.n. Hyggehond, [ADRES], info@hyggehond.nl</p>
+    <p>Ik/Wij (*) deel/delen (*) u hierbij mede dat ik/wij (*) onze overeenkomst betreffende de verkoop van de volgende producten herroep/herroepen (*): …</p>
+    <p>Besteld op (*) / ontvangen op (*): … · Ordernummer: … · Naam/Namen consument(en): … · Adres consument(en): … · Handtekening (alleen op papier): … · Datum: …</p>
+    <p class="muted">(*) Doorhalen wat niet van toepassing is.</p>`,
+  "voorwaarden": () => `<p class="concept">Concept, wordt juridisch nagekeken. De volledige tekst (14 artikelen) staat in webshop/05-teksten/juridisch/algemene-voorwaarden.md.</p><h1>Algemene voorwaarden</h1>
+    <ul><li>Art. 1–3: definities, identiteit, toepasselijkheid</li><li>Art. 4–6: aanbod, overeenkomst, prijzen (incl. btw; laagste prijs van 30 dagen bij korting)</li><li>Art. 7: herroepingsrecht, 30 dagen bedenktijd, herroepingsfunctie</li><li>Art. 8–9: levering (2–5 werkdagen, max. 30 dagen) en betaling</li><li>Art. 10–12: conformiteit, klachten, aansprakelijkheid</li><li>Art. 13–14: persoonsgegevens en toepasselijk recht</li></ul>`,
+  "privacy": () => `<p class="concept">Concept, wordt juridisch nagekeken. De volledige tekst staat in webshop/05-teksten/juridisch/privacyverklaring.md.</p><h1>Privacyverklaring</h1>
+    <p>Hyggehond (Dylan Smit Holding B.V.) verwerkt je gegevens om je bestelling uit te voeren, voor klantenservice en, alleen met je toestemming, voor de nieuwsbrief, analyse en advertenties. We verkopen je gegevens nooit. Je hebt recht op inzage, correctie, verwijdering en bezwaar via privacy@hyggehond.nl.</p>`,
+  "cookies": () => `<p class="concept">Concept. De volledige tekst staat in webshop/05-teksten/juridisch/cookieverklaring.md.</p><h1>Cookieverklaring</h1>
+    <p>Alleen noodzakelijke cookies plaatsen we zonder toestemming. Voor analyse- en marketingcookies vragen we eerst je toestemming. Weigeren is net zo makkelijk als accepteren.</p>
+    <div class="tw"><table><thead><tr><th>Categorie</th><th>Waarvoor</th><th>Toestemming?</th></tr></thead><tbody>
+    <tr><td>Noodzakelijk</td><td>Winkelwagen, afrekenen, beveiliging</td><td>Nee</td></tr><tr><td>Analyse</td><td>Google Analytics 4</td><td>Ja</td></tr><tr><td>Marketing</td><td>Meta, TikTok, Google Ads</td><td>Ja</td></tr></tbody></table></div>`,
+  "bedrijfsgegevens": () => `<h1>Bedrijfsgegevens</h1><p>Hyggehond is een handelsnaam van:</p>
+    <p><strong>Dylan Smit Holding B.V.</strong><br>[ADRES]<br>E-mail: info@hyggehond.nl<br>KvK-nummer: [KVK]<br>Btw-identificatienummer: [BTW]</p>
+    <p class="muted">Bezoek alleen op afspraak; we hebben geen winkel of afhaalpunt.</p>`
+};
+const PAGE_TITLES = { "over-ons": "Over ons", "faq": "Veelgestelde vragen", "contact": "Contact", "track-trace": "Bestelling volgen", "maatgids": "Maatgids", "herroepen": "Overeenkomst herroepen", "verzending": "Verzending", "retour": "Retourneren", "herroepingsrecht": "Herroepingsrecht", "voorwaarden": "Algemene voorwaarden", "privacy": "Privacyverklaring", "cookies": "Cookieverklaring", "bedrijfsgegevens": "Bedrijfsgegevens" };
+function viewPage(k) {
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>${esc(PAGE_TITLES[k])}</span></nav><div class="prose">${PAGES[k]()}</div></div>`;
+}
+function bindPage(k) {
+  const demo = main.querySelector("form[data-demo]");
+  if (demo) demo.onsubmit = e => { e.preventDefault(); if (!demo.reportValidity()) return; demo.outerHTML = `<p class="ok-msg" role="status">${esc(demo.dataset.demo)} <span class="muted">(Preview: er is niets verstuurd.)</span></p>`; };
+  const tr = main.querySelector("form[data-track]");
+  if (tr) tr.onsubmit = e => { e.preventDefault(); if (!tr.reportValidity()) return;
+    document.getElementById("trackOut").innerHTML = `<div class="ok-msg" role="status" style="display:grid;gap:.6rem"><strong>Voorbeeld: bestelling ${esc(document.getElementById("tOrder").value)}, 2 pakketten</strong>
+      <p>Pakket 1 van 2 · <strong>Verzonden</strong> · PostNL · verwacht ${deliveryText()}</p><p>Pakket 2 van 2 · <strong>Ontvangen</strong> · wordt klaargemaakt in het magazijn</p>
+      <p class="muted">Preview met voorbeelddata. In de echte winkel komt hier de status uit Parcel Panel.</p></div>`; };
+  const hr = main.querySelector("form[data-herroep]");
+  if (hr) hr.onsubmit = e => { e.preventDefault(); if (!hr.reportValidity()) return;
+    const t = new Date().toLocaleString("nl-NL", { dateStyle: "long", timeStyle: "short" });
+    document.getElementById("herroepOut").innerHTML = `<div class="ok-msg" role="status"><strong>Herroeping ontvangen op ${t}.</strong> Daarmee ben je op tijd. Binnen 1 werkdag sturen we je het retouradres. <span class="muted">(Preview: er is geen e-mail verstuurd.)</span></div>`;
+    hr.hidden = true; };
+  if (k === "maatgids") {
+    const calc = () => { const l = +document.getElementById("scLen").value || 0, t = document.getElementById("scType").value;
+      const out = document.getElementById("scOut");
+      if (l < 20) { out.textContent = "Vul de lengte van je hond in centimeters in."; return; }
+      if (t === "flat") { const min = l + 15, ms = [["S", 70], ["M", 90], ["L", 110]].find(([, m]) => m >= min);
+        out.innerHTML = `Minimale binnenlengte: <strong>${min}–${l + 20} cm</strong>. ${ms ? `Advies: <a href="#p-orthopedische-hondenmand-rust">mand Rust maat ${ms[0]}</a> (${ms[1]} cm).` : "Groter dan ons grootste formaat (110 cm); mail ons voor advies."}`; }
+      else { const min = l + 10, ms = [["S", 50], ["M", 70], ["L", 90]].find(([, m]) => m >= min);
+        out.innerHTML = `Minimale diameter: <strong>${min}–${l + 15} cm</strong>. ${ms ? `Advies: <a href="#p-donutmand-nest">Donutmand Nest maat ${ms[0]}</a> (Ø ${ms[1]} cm).` : "Groter dan onze grootste donut (Ø 90 cm); kies een rechthoekige mand."}`; } };
+    document.getElementById("scLen").oninput = calc; document.getElementById("scType").onchange = calc; calc();
+  }
+}
+function viewJournal() {
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>Journal</span></nav>
+    <div class="col-head"><h1>Journal</h1><p>Praktische tips voor een ontspannen hond, in huis en op pad.</p></div>
+    <div class="posts" style="padding-bottom:3rem">${BLOGS.map((b, i) => `<a class="post" href="#b-${b.slug}"><div class="ph" style="background:color-mix(in oklab, var(--sand) ${30 + i * 8}%, var(--bg))">${svg(["bed", "gift", "leash", "ball", "truck"][i])}</div><h2 style="font-size:1.3rem">${esc(b.t)}</h2><p class="muted">${esc(b.d)}</p></a>`).join("")}</div></div>`;
+}
+function viewArticle(slug) {
+  const b = BLOGS.find(x => x.slug === slug); if (!b) return null;
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><a href="#journal">Journal</a></nav>
+    <article class="prose"><h1>${esc(b.t)}</h1>${b.html}</article></div>`;
+}
+function viewCheckout() {
+  if (!cart.length) return `<div class="wrap prose" style="padding-top:2rem"><h1>Afrekenen</h1><p>Je winkelwagen is leeg.</p><p><a class="btn ghost" href="#c-all">Bekijk alle producten</a></p></div>`;
+  const st = subtotal(), sc = shipCost(st), pc = parcels();
+  return `<div class="wrap"><nav class="crumbs" aria-label="Kruimelpad"><a href="#home">Home</a><span>/</span><span>Afrekenen</span></nav>
+    <p class="concept" style="margin-bottom:1.5rem">Preview van de Shopify-checkout. Er wordt niets besteld of betaald, en je gegevens worden niet opgeslagen of verstuurd.</p>
+    <form class="co" id="coForm" novalidate>
+      <div style="display:grid;gap:2rem;min-width:0">
+        <fieldset><legend>Contact</legend>
+          <label>E-mailadres<input id="coMail" type="email" autocomplete="email" required></label>
+          <label class="check"><input type="checkbox" id="coNews"> Stuur me tips en aanbiedingen (optioneel)</label></fieldset>
+        <fieldset><legend>Bezorging</legend>
+          <label>Land<select id="coCountry"><option>Nederland</option><option>België</option></select></label>
+          <div class="two"><label>Voornaam<input id="coFirst" autocomplete="given-name" required></label><label>Achternaam<input id="coLast" autocomplete="family-name" required></label></div>
+          <div class="two"><label>Postcode<input id="coZip" autocomplete="postal-code" required></label><label>Huisnummer<input id="coNr" required></label></div>
+          <label>Straat en plaats<input id="coStreet" autocomplete="street-address" required></label>
+          <label>Telefoon (voor de bezorger, optioneel)<input id="coTel" type="tel" autocomplete="tel"></label></fieldset>
+        <fieldset><legend>Verzending</legend>
+          <div class="paym"><label><input type="radio" name="ship" checked> <span style="flex:1">Standaard · 2–5 werkdagen${pc > 1 ? ` · ${pc} pakketten` : ""}</span><strong>${sc ? eur(sc) : "Gratis"}</strong></label></div></fieldset>
+        <fieldset><legend>Betaling</legend>
+          <div class="paym">${["iDEAL | Wero", "Bancontact", "Creditcard", "Apple Pay", "Google Pay", "Klarna – achteraf betalen"].map((m, i) => `<label><input type="radio" name="pay" value="${esc(m)}"${i === 0 ? " checked" : ""}> ${esc(m)}</label>`).join("")}</div>
+          <p class="muted" style="font-size:.85rem">Je rondt de betaling af in de beveiligde omgeving van je bank of betaalprovider.</p></fieldset>
+        <p style="font-size:.88rem" class="muted">Door te bestellen ga je akkoord met onze <a href="#voorwaarden">algemene voorwaarden</a>. Je hebt 30 dagen bedenktijd; lees ons <a href="#herroepingsrecht">herroepingsrecht</a>.</p>
+        <button class="btn full">Nu betalen</button>
+      </div>
+      <aside class="summary" aria-label="Overzicht bestelling"><h2 style="font-size:1.25rem">Je bestelling</h2>
+        ${cart.map(i => { const p = byH[i.h], v = p.v[i.v]; return `<div class="line" style="grid-template-columns:56px 1fr auto">${ph(p)}<div><span style="font-weight:500">${esc(p.t)}</span><div class="muted" style="font-size:.85rem">${esc(v.n)} · ${i.q}×</div></div><span style="font-variant-numeric:tabular-nums">${eur(v.p * i.q)}</span></div>`; }).join("")}
+        <div class="sum"><span>Subtotaal</span><span>${eur(st)}</span></div><div class="sum"><span>Verzending</span><span>${sc ? eur(sc) : "Gratis"}</span></div>
+        <div class="sum total"><span>Totaal</span><span>${eur(st + sc)}</span></div>
+        <p class="muted" style="font-size:.85rem">Inclusief ${eur((st + sc) - (st + sc) / 1.21)} btw (21%)</p></aside>
+    </form></div>`;
+}
+function bindCheckout() {
+  const f = document.getElementById("coForm"); if (!f) return;
+  f.onsubmit = e => { e.preventDefault(); if (!f.reportValidity()) return;
+    const pc = parcels(), m = f.querySelector('input[name="pay"]:checked').value;
+    main.innerHTML = `<div class="wrap prose" style="padding-top:2rem"><span class="eyebrow">Bestelling #HH1001 (voorbeeld)</span><h1>Dank je wel, ${esc(document.getElementById("coFirst").value)}</h1>
+      <p class="concept">Preview: er is niets besteld of betaald, en de betaling via ${esc(m)} is niet uitgevoerd. In de echte winkel stuur je hier door naar de betaalomgeving.</p>
+      <p>Je ontvangt een orderbevestiging per e-mail met je factuur, de algemene voorwaarden en het modelformulier voor herroeping.</p>
+      <p>Verwachte levering: <strong>${deliveryText()}</strong>${pc > 1 ? `, in ${pc} pakketten. Je ontvangt per pakket een trackinglink.` : "."}</p>
+      <p>Toch van gedachten veranderd? Gebruik <a href="#herroepen">Overeenkomst herroepen</a>.</p>
+      <p><a class="btn ghost" href="#home">Verder winkelen</a></p></div>`;
+    cart = []; save(); renderCart(); main.focus(); };
+}
+
+/* router */
+function route() {
+  if (stickyObs) { stickyObs.disconnect(); stickyObs = null; }
+  document.getElementById("stickyAtc").hidden = true;
+  mnav.hidden = true; menuBtn.setAttribute("aria-expanded", "false");
+  const k = decodeURIComponent(location.hash.slice(1)) || "home";
+  let html = null, after = null, navKey = k;
+  if (k === "home" || k === "main") html = viewHome();
+  else if (k.startsWith("c-")) { html = viewCollection(k.slice(2)); after = () => bindCollection(k.slice(2)); }
+  else if (k.startsWith("p-")) { html = viewProduct(k.slice(2)); after = () => bindProduct(k.slice(2));
+    const p = byH[k.slice(2)]; if (p) { const s = colByName[p.c].slug; navKey = s === "eten-drinken" || s === "spelen-verrijking" ? "c-eten-spelen" : "c-" + s; } }
+  else if (k === "journal") html = viewJournal();
+  else if (k.startsWith("b-")) { html = viewArticle(k.slice(2)); navKey = "journal"; }
+  else if (k === "checkout") { html = viewCheckout(); after = bindCheckout; }
+  else if (PAGES[k]) { html = viewPage(k); after = () => bindPage(k); }
+  if (html === null) html = `<div class="wrap prose" style="padding-top:2rem"><h1>Pagina niet gevonden</h1><p>Deze pagina bestaat niet (meer). <a href="#home">Terug naar home</a></p></div>`;
+  if (k === "main") return;
+  main.innerHTML = html;
+  document.getElementById("mainNav").innerHTML = navHtml(navKey);
+  document.getElementById("mobileNavInner").innerHTML = navHtml(navKey) + `<a href="#faq">Klantenservice</a><a href="#over-ons">Over ons</a>`;
+  if (after) after();
+  const nl = document.getElementById("nlForm");
+  if (nl) nl.onsubmit = e => { e.preventDefault(); if (!nl.reportValidity()) return; nl.hidden = true; document.getElementById("nlOk").hidden = false; };
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+document.addEventListener("click", e => { const a = e.target.closest('a[href^="#"]'); if (a && a.getAttribute("href") === location.hash) route(); });
+renderCart(); route();
+</script>

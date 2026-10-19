@@ -12,6 +12,7 @@ Premium hondenaccessoires, Shopify, EU-leveranciers. Rechtspersoon: Dylan Smit H
 | 5 | Teksten: [pagina's](05-teksten/paginateksten.md) · [producten](05-teksten/productteksten.md) · [juridisch (concept)](05-teksten/juridisch/) · [blog](05-teksten/blog/) · [e-mailflows](05-teksten/emailflows.md) · [SEO](05-teksten/seo-zoekwoorden.md) · [klantenservice](05-teksten/klantenservice-templates.md) |
 | 6 | [Technische setup stap voor stap](06-technische-setup/README.md) · [thema-snippets](06-technische-setup/theme/snippets/) |
 | 7 | [Lanceringschecklist + 30-dagenplan](07-lancering.md) |
+| — | [Klikbare preview](preview/index.html) (opbouw: `python3 webshop/preview/build.py`) |
 | — | [Klantenservice en operatie (retouren, leveranciers, wekelijkse check)](08-klantenservice-operatie.md) |
 
 ## Jouw to-do's (die ik niet voor je kan doen)
