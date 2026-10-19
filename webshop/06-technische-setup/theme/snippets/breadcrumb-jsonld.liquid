@@ -1,0 +1,21 @@
+{%- comment -%} BreadcrumbList voor product- en collectiepagina's. Plaats in theme.liquid binnen <head>: {% render 'breadcrumb-jsonld' %} {%- endcomment -%}
+{%- if template.name == 'product' or template.name == 'collection' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ shop.url | json }} }
+    {%- if template.name == 'collection' -%},
+    { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} }
+    {%- elsif template.name == 'product' -%}
+      {%- assign pc = product.collections | first -%}
+      {%- if pc -%},
+    { "@type": "ListItem", "position": 2, "name": {{ pc.title | json }}, "item": {{ shop.url | append: pc.url | json }} }
+      {%- endif -%},
+    { "@type": "ListItem", "position": {% if pc %}3{% else %}2{% endif %}, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+    {%- endif -%}
+  ]
+}
+</script>
+{%- endif -%}

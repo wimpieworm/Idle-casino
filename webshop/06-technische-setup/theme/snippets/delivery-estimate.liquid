@@ -1,0 +1,28 @@
+{%- comment -%}
+  Eerlijke leverdatumindicatie op basis van product-metafields:
+    custom.levertijd_min (getal, werkdagen), custom.levertijd_max (getal, werkdagen). Standaard 2–5.
+  Telt alleen werkdagen (ma–vr), cut-off 15:00 lokale tijd. Geen afteltimer, alleen een datum-indicatie.
+  Gebruik in main-product.liquid onder de prijs: {% render 'delivery-estimate', product: product %}
+{%- endcomment -%}
+{%- assign min = product.metafields.custom.levertijd_min.value | default: 2 -%}
+{%- assign max = product.metafields.custom.levertijd_max.value | default: 5 -%}
+<p class="delivery-estimate" data-min="{{ min }}" data-max="{{ max }}">
+  {%- if product.selected_or_first_available_variant.available -%}
+    Op voorraad · Levering in {{ min }}–{{ max }} werkdagen
+  {%- else -%}
+    Tijdelijk uitverkocht
+  {%- endif -%}
+</p>
+<script>
+  (function () {
+    var el = document.currentScript.previousElementSibling;
+    if (!el || el.textContent.indexOf('Op voorraad') === -1) return;
+    function addWorkdays(d, n) { d = new Date(d); while (n > 0) { d.setDate(d.getDate() + 1); var w = d.getDay(); if (w && w < 6) n--; } return d; }
+    var now = new Date(), start = new Date(now);
+    if (now.getHours() >= 15 || now.getDay() === 0 || now.getDay() === 6) start = addWorkdays(now, 1);
+    var f = { weekday: 'short', day: 'numeric', month: 'short' };
+    el.textContent = 'Op voorraad · Verwachte levering ' +
+      addWorkdays(start, +el.dataset.min).toLocaleDateString('nl-NL', f) + ' – ' +
+      addWorkdays(start, +el.dataset.max).toLocaleDateString('nl-NL', f);
+  })();
+</script>

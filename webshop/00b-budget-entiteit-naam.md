@@ -6,11 +6,11 @@
 |---|---|---|
 | Shopify Basic, maand 1–2 | € 60 | Vaak is er een introductieactie (bv. € 1 per maand voor de eerste maanden); bij aanmelden controleren |
 | Domein .nl + .be (1 jaar) | € 25 | |
-| Leveranciers-app (bv. Syncee/Spocket), 2 maanden | € 60 | Het gratis plan volstaat soms om te starten |
+| Leveranciers-app Syncee (gratis tijdens selectie, daarna ca. € 37/mnd) | € 75 | Zie stap 2 |
 | Samples voor eigen foto's/video (4–5 producten) | € 200 | Ook controle op kwaliteit en GPSR-labels |
 | Juridische check (beperkte review van de concepten) | € 150 | Concepten schrijf ik zelf; een volledige review door een advocaat kost meestal meer |
 | Advertenties, eerste 30 dagen | € 400 | ca. € 13 per dag: een testbudget, nog geen schaalbudget |
-| Buffer en werkkapitaal | € 105 | Je betaalt de leverancier vóórdat de betaalprovider aan jou uitbetaalt; plus retouren/chargebacks |
+| Buffer en werkkapitaal | € 90 | Je betaalt de leverancier vóórdat de betaalprovider aan jou uitbetaalt; plus retouren/chargebacks |
 | **Totaal** | **€ 1.000** | |
 
 Gratis te gebruiken: het Shopify-thema Dawn of Sense, Klaviyo (gratis tot 250 contacten), het gratis plan van Kiyoh of Trustpilot, Google Merchant Center (gratis vermeldingen) en organische TikTok/Instagram.

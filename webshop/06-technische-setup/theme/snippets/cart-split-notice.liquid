@@ -1,0 +1,18 @@
+{%- comment -%}
+  Melding in winkelwagen als producten van meerdere leveranciers komen.
+  Vereist: product-metafield custom.leverancier (tekst, één regel), gevuld per product (bv. "L1", "L2").
+  Gebruik in main-cart-items.liquid en cart-drawer.liquid boven het subtotaal: {% render 'cart-split-notice' %}
+{%- endcomment -%}
+{%- assign leveranciers = ',' -%}
+{%- for item in cart.items -%}
+  {%- assign l = item.product.metafields.custom.leverancier.value | default: 'onbekend' -%}
+  {%- assign zoek = ',' | append: l | append: ',' -%}
+  {%- unless leveranciers contains zoek -%}{%- assign leveranciers = leveranciers | append: l | append: ',' -%}{%- endunless -%}
+{%- endfor -%}
+{%- assign aantal = leveranciers | remove_first: ',' | split: ',' | size -%}
+{%- if aantal > 1 -%}
+  <p class="cart-split-notice" role="status">
+    Je bestelling komt in {{ aantal }} pakketten, omdat de producten bij verschillende Europese partners liggen.
+    Je ontvangt per pakket een trackinglink. Dit kost je niets extra.
+  </p>
+{%- endif -%}

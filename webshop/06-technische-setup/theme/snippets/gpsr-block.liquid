@@ -1,0 +1,46 @@
+{%- comment -%}
+  GPSR-productveiligheidsblok (Verordening (EU) 2023/988, art. 19).
+  Metafields (Instellingen → Aangepaste gegevens → Producten), namespace "custom":
+    gpsr_manufacturer_name     (tekst, één regel)
+    gpsr_manufacturer_address  (tekst, meerdere regels)
+    gpsr_manufacturer_contact  (tekst, één regel: e-mail of url)
+    gpsr_eu_responsible        (tekst, meerdere regels; alleen als fabrikant buiten EU)
+    gpsr_warnings              (tekst, meerdere regels)
+  Gebruik: {% render 'gpsr-block', product: product %} in main-product.liquid,
+  of voeg toe als "Inklapbare rij" met deze snippet via een Custom Liquid-blok.
+{%- endcomment -%}
+{%- assign m = product.metafields.custom -%}
+<details class="gpsr-block">
+  <summary><h2 class="h4">Productveiligheid</h2></summary>
+  <dl>
+    <dt>Fabrikant</dt>
+    <dd>
+      {%- if m.gpsr_manufacturer_name.value != blank -%}
+        {{ m.gpsr_manufacturer_name.value }}<br>
+        {{ m.gpsr_manufacturer_address.value | newline_to_br }}<br>
+        {{ m.gpsr_manufacturer_contact.value }}
+      {%- else -%}
+        Dylan Smit Holding B.V. (h.o.d.n. Hyggehond), {{ shop.address.address1 }}, {{ shop.address.zip }} {{ shop.address.city }}, info@hyggehond.nl
+      {%- endif -%}
+    </dd>
+    {%- if m.gpsr_eu_responsible.value != blank -%}
+      <dt>Verantwoordelijke persoon in de EU</dt>
+      <dd>{{ m.gpsr_eu_responsible.value | newline_to_br }}</dd>
+    {%- endif -%}
+    <dt>Productidentificatie</dt>
+    <dd>{{ product.selected_or_first_available_variant.sku }}{% if product.selected_or_first_available_variant.barcode != blank %} · EAN {{ product.selected_or_first_available_variant.barcode }}{% endif %}</dd>
+    {%- if m.gpsr_warnings.value != blank -%}
+      <dt>Waarschuwingen en veiligheidsinformatie</dt>
+      <dd>{{ m.gpsr_warnings.value | newline_to_br }}</dd>
+    {%- endif -%}
+  </dl>
+  <p>Een veiligheidsprobleem met dit product? Meld het via <a href="mailto:info@hyggehond.nl">info@hyggehond.nl</a>.</p>
+</details>
+<style>
+  .gpsr-block { border-top: 1px solid rgba(var(--color-foreground), .15); padding: 1.2rem 0; }
+  .gpsr-block summary { cursor: pointer; list-style: none; }
+  .gpsr-block summary:focus-visible { outline: 2px solid rgb(var(--color-foreground)); outline-offset: 2px; }
+  .gpsr-block summary h2 { display: inline; margin: 0; }
+  .gpsr-block dt { font-weight: 600; margin-top: .8rem; }
+  .gpsr-block dd { margin: .2rem 0 0; }
+</style>

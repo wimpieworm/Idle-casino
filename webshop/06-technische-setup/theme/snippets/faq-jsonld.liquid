@@ -1,0 +1,23 @@
+{%- comment -%}
+  FAQPage structured data. Bron: metaobject-lijst product.metafields.custom.faq
+  (metaobject-definitie "faq" met velden "vraag" en "antwoord"), of page.metafields.custom.faq.
+  Gebruik: {% render 'faq-jsonld', faqs: product.metafields.custom.faq.value %}
+  Alleen renderen als dezelfde vragen ook zichtbaar op de pagina staan (Google-eis).
+{%- endcomment -%}
+{%- if faqs != blank and faqs.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for f in faqs -%}
+    {
+      "@type": "Question",
+      "name": {{ f.vraag | json }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ f.antwoord | json }} }
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}

@@ -1,0 +1,40 @@
+{%- comment -%}
+  Sticky "In winkelwagen"-balk voor mobiel. Verschijnt zodra de hoofdknop uit beeld scrolt.
+  Gebruik in main-product.liquid onderaan: {% render 'sticky-atc', product: product %}
+  Klikt de bezoeker, dan wordt het bestaande productformulier verstuurd (dezelfde variant, geen dubbele logica).
+{%- endcomment -%}
+<div class="sticky-atc" id="StickyAtc" hidden>
+  <span class="sticky-atc__price">{{ product.selected_or_first_available_variant.price | money }}</span>
+  <button type="button" class="button button--primary" id="StickyAtcButton"
+    {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+    {%- if product.selected_or_first_available_variant.available -%}In winkelwagen{%- else -%}Uitverkocht{%- endif -%}
+  </button>
+</div>
+<style>
+  .sticky-atc { position: fixed; inset: auto 0 0 0; z-index: 3; display: flex; gap: 1rem; align-items: center;
+    justify-content: space-between; padding: 1rem 1.6rem calc(1rem + env(safe-area-inset-bottom));
+    background: rgb(var(--color-background)); box-shadow: 0 -2px 8px rgba(0,0,0,.08); }
+  .sticky-atc .button { flex: 1; min-height: 4.4rem; }
+  @media (min-width: 750px) { .sticky-atc { display: none !important; } }
+</style>
+<script>
+  (function () {
+    var bar = document.getElementById('StickyAtc');
+    var form = document.querySelector('form[action$="/cart/add"][id^="product-form-"]');
+    var mainBtn = form && form.querySelector('[type="submit"]');
+    if (!bar || !mainBtn || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (e) { bar.hidden = e[0].isIntersecting; }).observe(mainBtn);
+    document.getElementById('StickyAtcButton').addEventListener('click', function () { mainBtn.click(); });
+    function update(v) {
+      if (!v) return;
+      bar.querySelector('.sticky-atc__price').textContent =
+        (v.price / 100).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
+      var b = document.getElementById('StickyAtcButton');
+      b.disabled = !v.available; b.textContent = v.available ? 'In winkelwagen' : 'Uitverkocht';
+    }
+    // Dawn publiceert variantwissels via pubsub
+    if (window.subscribe && window.PUB_SUB_EVENTS) {
+      subscribe(PUB_SUB_EVENTS.variantChange, function (e) { update(e.data && e.data.variant); });
+    }
+  })();
+</script>

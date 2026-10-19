@@ -1,0 +1,13 @@
+{%- comment -%} Voortgang naar gratis verzending (echte drempel € 50). Gebruik in cart-drawer en main-cart-footer. {%- endcomment -%}
+{%- assign drempel = 5000 -%}
+{%- assign rest = drempel | minus: cart.total_price -%}
+<div class="free-ship" role="status">
+  {%- if rest > 0 -%}
+    <p>Nog <strong>{{ rest | money }}</strong> tot gratis verzending.</p>
+    {%- assign pct = cart.total_price | times: 100 | divided_by: drempel -%}
+    <progress max="100" value="{{ pct }}" aria-label="Voortgang naar gratis verzending">{{ pct }}%</progress>
+  {%- else -%}
+    <p>Je bestelling wordt <strong>gratis verzonden</strong>.</p>
+  {%- endif -%}
+</div>
+<style>.free-ship progress{width:100%;height:.6rem;accent-color:#5E6B4E}</style>
